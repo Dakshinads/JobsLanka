@@ -12,11 +12,11 @@
         background-color: rgba(0, 0, 0, .1);
         border: solid rgba(0, 0, 0, .15);
         border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        box-shadow: inset 0 .5em 1.5em rgba(148, 77, 77, 0.1), inset 0 .125em .5em rgba(0, 0, 0, .15);
       }
 
       .mybgColor{
-        background-color:#80b3ff;
+        background-color:rgba(53, 138, 208, 0.1);
       }
     </style>
 </head>
@@ -29,7 +29,7 @@
 </main>
 
 <div class="b-example-divider"></div>
-<div class="">
+<div class="mybgColor">
 <div class="container ">
   <footer class="py-5 border-top">
     <div class="row">
