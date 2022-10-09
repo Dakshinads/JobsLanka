@@ -1,6 +1,6 @@
 <div class="mybgColor ">
 <div class="container ">
-  <footer class="py-2 border-top">
+  <footer class="pt-5 pb-2 border-top">
     <div class="row">
       <div class="col-6 col-md-6 mb-3">
         <a href="index.php" class="d-flex align-items-center mb-3 link-dark text-decoration-none">

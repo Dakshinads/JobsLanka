@@ -1,6 +1,13 @@
-<?php $profile = 0; ?>
+<?php $profile = 0; 
 
-<header class="p-3 mb-1 border-bottom mybgColor" >
+function setprofile($i){
+  global $profile;
+  $profile = $i;
+}
+
+?>
+
+<header class="p-3 mb-1 border-bottom mybgColor shadow " >
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="index.php" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
@@ -8,9 +15,9 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <!--<li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
+          <li><a href="#" class="nav-link px-2 link-dark">Home</a></li>
+          <li><a href="#" class="nav-link px-2 link-dark">Employers</a></li>
+          <!--<li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>-->
         </ul>
 
@@ -18,7 +25,7 @@
 <?php if($profile==0){ ?>
     <div class="col-md-3 text-end">
     <button type="button" class="btn btn-outline-primary me-2"><b>Post a Job</b></button>
-    <button type="button" class="btn btn-warning me-2">Sign up</button>
+    <a href="signup.php"><button type="button" class="btn btn-warning me-2">Sign up</button></a>
     <a href="login.php"><button type="button" class="btn btn-primary">Log in</button></a>
     </div>
 <?php } ?>

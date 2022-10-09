@@ -8,9 +8,12 @@
     <link href="assets\css\jobslanka.css" rel="stylesheet">
 
 </head>
-<body style="background-color:  #c0d3e3;">
-<section class="h-100 gradient-form" >
-  <div class="container py-5 ">
+<body >
+<!-- Adding header -->
+<?php include "header.php"; setprofile(2); ?>
+
+<section class="h-100 gradient-form" style="background-color:  #dfe3e5;" >
+  <div class="container py-3 ">
     <div class="row d-flex justify-content-center align-items-center ">
       <div class="col-lg-10">
         <div class="card rounded-4 text-black">
@@ -21,7 +24,7 @@
                 <div class="text-center">
                    <a href="index.php">
                   <img src="Images\logo_noBack.png"
-                    style="width: 250px;" class="pb-5 py-5" alt="logo"></a>
+                    style="width: 280px;" class="pb-5 py-3" alt="logo"></a>
                   <h4 class="mt-1 mb-5 pb-1 ">Welcome to Jobs Lanka</h4>
                 </div>
 
@@ -47,7 +50,7 @@
 
                   <div class="d-flex align-items-center justify-content-center pb-1">
                     <p class="mb-0 me-2">Don't have an account?</p>
-                    <button type="button" class="btn btn-outline-primary">Create new</button>
+                    <a href="signup.php"><button type="button" class="btn btn-outline-primary">Create new</button></a>
                   </div>
 
                 </form>
@@ -68,6 +71,10 @@
     </div>
   </div>
 </section>
+
+<!-- Adding footer -->
+<?php include "footer.php" ?>
+
 <script src="assets\js\bootstrap.bundle.min.js"></script>
 </body>
 </html>
