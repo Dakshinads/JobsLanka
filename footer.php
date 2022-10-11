@@ -12,7 +12,7 @@
         <ul class="nav flex-column">
         <h5>About</h5>
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About us</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Contact us</a></li>
+          <li class="nav-item mb-2"><a href="contactus.php" class="nav-link p-0 text-muted">Contact us</a></li>
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Inquiry</a></li>
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQ</a></li>
         </ul>
