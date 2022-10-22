@@ -32,10 +32,11 @@ class Mail{
         $mail->Body = $body;
         
         if(!$mail->send()){
-            echo "Mail Error: ".$mail->ErrorInfo;
+            return false;
         }else{
-            echo "Successfully sent";
+            return true;
         }        
     }
 }
+
 ?>

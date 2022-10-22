@@ -1,3 +1,12 @@
+<?php require "fillCombo.php";
+
+require "Mail.php";
+
+require("sajax.php");     
+sajax_init();
+sajax_export("verifyEmail");
+sajax_handle_client_request();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,6 +33,133 @@
         }
     }
 
+    <?php sajax_show_javascript(); ?>
+
+    sendvc = 0;
+    function verifyEmail()
+    {      
+      var re = /\S+@\S+\.\S+/;
+ 
+      mailAddress="";
+      componentIdName="";
+      if(document.getElementById("atype1").checked){
+          mailAddress = document.getElementById("jemail").value;
+      }else{
+        mailAddress = document.getElementById("oemail").value;
+      }
+      
+      if(re.test(mailAddress)){
+        verifyCode = Math.random().toString().substr(2, 6);
+        sendVerifyCode = verifyCode+"_"+mailAddress;
+        sendvc = verifyCode;
+
+        x_verifyEmail(sendVerifyCode,verifyEmail_x);
+      }
+      else{
+
+      if(document.getElementById("atype2").checked){
+      $("#response1").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-danger">Email is invalid</div>').hide().appendTo('#response1').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#response1").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+
+      }else{
+
+        $("#response2").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-danger">Email is invalid</div>').hide().appendTo('#response2').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#response2").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+      }
+
+      }
+    }
+
+    function verifyEmail_x(d){
+
+      if(document.getElementById("atype2").checked){
+      $("#response1").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-success">Verification Mail send.</div>').hide().appendTo('#response1').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#response1").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+
+      }else{
+
+        $("#response2").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-success">Verification Mail send.</div>').hide().appendTo('#response2').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#response2").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+      
+      }
+      console.log(sendvc);
+      $("#verifyCodeModal").modal("show");
+    }
+
+    function validCode(){
+      $("#verifyCodeModal").modal("hide");
+      if(sendvc==document.getElementById("vcode").value){
+        if(document.getElementById("atype1").checked){
+          var btnV= document.getElementById("jvemail");
+          btnV.innerHTML="Verified";
+          btnV.disabled = true;
+        }else{
+          var btnV= document.getElementById("ovemail");
+          btnV.innerHTML="Verified";
+          btnV.disabled = true;
+        }
+      }else{
+          alert("Not verified");
+      }
+    }
+
+    function checkCodeValidity(v){
+        if(sendvc==v){
+          document.getElementById("vcode").classList.add('is-valid');
+          document.getElementById("vcode").classList.remove('is-invalid');
+        }else{
+          document.getElementById("vcode").classList.add('is-invalid');
+          document.getElementById("vcode").classList.remove('is-valid');
+        }
+    }
     </script>
 </head>
 <body>
@@ -38,6 +174,7 @@
             <hr class="my-4">
 
             <h5 class="mt-3">Are you a Job Seeker or an Employer?</h5>
+            <form method="POST" action="">
             <div class="col-sm-6 mb-3">
             <div class="form-check">
               <input id="atype1" name="atype" type="radio" value="JobSeeker" class="form-check-input" onchange="isEmployer();" checked required>
@@ -48,6 +185,7 @@
               <label class="form-check-label font-weight-bold" >Employer</label>
             </div>
             </div>
+            </form>
             <hr class="my-4">
 
             <form method="POST" action="" class="needs-validation" id="frmEmployer" novalidate>
@@ -73,7 +211,8 @@
             </div>
             <div class="col-sm-6 mb-3">
               <label  class="form-label"></label></br></br>
-              <a href=""id="ovemail" >Verify Email</a>
+              <button type="button" id="ovemail" class="btn btn-link" onclick="verifyEmail();">Verify Email</button> 
+              <div id="response1"></div>             
             </div>
             </div>
 
@@ -87,7 +226,7 @@
             </div>
             <div class="col-sm-6 mb-3">
               <label  class="form-label">Web site</label>
-              <input type="url" class="form-control" id="oweb" placeholder="Web site" value="">
+              <input type="url" class="form-control" id="oweb" placeholder="https://" value="">
               <div class="invalid-feedback">
                 Enter valid web site.
               </div>
@@ -114,7 +253,10 @@
             <div class="row ">
             <div class="col-6 mb-3">
             <label class="form-label">Logo</label>
-            <input class="form-control" id="ologo" type="file">
+            <input class="form-control" id="ologo" type="file" accept="image/png, image/jpeg" onchange="logoValidation('ologo')">
+            <div class="invalid-feedback">
+              File type must be .png or .jpeg
+            </div>
             </div>
             </div>
             <div class="row ">
@@ -174,6 +316,7 @@
               <label  class="form-label">Home Town</label>
               <select class="form-select" id="jtown" required>
                 <option value="">Choose...</option>
+                <?php getComboValue('location'); ?>
               </select>
               <div class="invalid-feedback">
                 Please provide a valid Home Town.
@@ -192,7 +335,8 @@
             </div>
             <div class="col-sm-6 mb-3">
               <label  class="form-label"></label></br></br>
-              <a href=""id="jvemail" >Verify Email</a>
+              <button type="button" id="jvemail" class="btn btn-link" onclick="verifyEmail();">Verify Email</button>
+              <div id="response2"></div>   
             </div>
             </div>
 
@@ -216,12 +360,16 @@
             <div class="row ">
             <div class="col-6 mb-3">
             <label class="form-label">CV</label>
-            <input class="form-control" id="jcv" type="file" required>
+            <input class="form-control" id="jcv" type="file" accept=".pdf" onchange="cvValidation('jcv')"  required>
+            <div class="invalid-feedback">
+              File type must be .pdf
+            </div>
             </div>
             <div class="col-sm-6 mb-3">
               <label  class="form-label">Prefered Job Category</label>
               <select class="form-select" id="jcategory" required>
                 <option value="">Choose...</option>
+                <?php getComboValue('job_category'); ?>
               </select>
               <div class="invalid-feedback">
                 Please provide a valid Job Category.
@@ -241,12 +389,58 @@
         
     </div>
 </main>
-<script>isEmployer();</script>
-<!-- Adding footer -->
-<?php include "footer.php" ?>
 
-<script src="assets\js\bootstrap.bundle.min.js"></script>
+<!-- Modal -->
+<div class="modal fade" id="verifyCodeModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">          
+          <h5 class="modal-title">Enter a verification code</h5>
+        </div>
+        <form method="post" class="" novalidate>
+        <div class="modal-body">
+            <input type="text" class="form-control" id="vcode"  minlength="6" maxlength="6" value="" oninput="checkCodeValidity(this.value)" required>       
+            <div class="invalid-feedback"> 
+                Verify code is invalid
+              </div>  
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-primary" onclick="validCode();" value="Verify">
+          <button type="button" class="btn btn-default" onclick="$('#verifyCodeModal').modal('hide');">Close</button>
+        </div>
+        </form> 
+      </div>
+    </div>
+  </div>
+
+<script>isEmployer();
+</script>
 <script src="assets\js\form-validations.js"></script>
+<script src="assets\js\bootstrap.bundle.min.js"></script>
+<script src="assets\js\fileValidation.js"></script>
+<script src="assets\js\jquery-3.6.1.min.js"></script>
+
+<!-- Adding footer -->
+<?php include "footer.php"; ?>
 
 </body>
 </html>
+<?php
+
+function verifyEmail($vcode){
+    
+  $valuesAr=explode("_",$vcode);
+    $verifycode=$valuesAr[0];
+    $mailAddress=$valuesAr[1];
+
+    $mail = new Mail();
+   /* $v=$mail->sendMail($mailAddress, "JobsLanka Email Verification",
+    "Hello
+    You requested to use this email address to access your JobsLanka account.
+    This is your verification code:".$verifycode
+    );*/
+  $v=1;
+    return $v;
+}
+
+?>
