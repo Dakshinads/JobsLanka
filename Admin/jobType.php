@@ -5,7 +5,7 @@ require "../fillCombo.php"; ?>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Job category</title>
+    <title>Jobs Lanka Job Type</title>
 
     
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -67,13 +67,13 @@ require "../fillCombo.php"; ?>
                   <div class=" py-0 px-3">
                       <ul class="nav flex-column">
                         <li class="nav-item">
-                          <a class="nav-link active" href="jobCategory.php">
+                          <a class="nav-link" href="jobCategory.php">
                             <span data-feather="file" class="align-text-bottom"></span>
                             Job Category
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="jobType.php">
+                          <a class="nav-link  active" href="jobType.php">
                             <span data-feather="file" class="align-text-bottom"></span>
                             Job Type
                           </a>
@@ -128,10 +128,10 @@ require "../fillCombo.php"; ?>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
      
-    <h1 class="h2 mt-3">Job category</h1></br>
+    <h1 class="h2 mt-3">Job Type</h1></br>
     <div class="row">
       <div class='alert alert-success alert-dismissible collapse' role='alert' id="updateDoneAlert">
-        Job category updated..
+        Job Type updated..
         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
       </div>
       <div class='alert alert-success alert-dismissible collapse' role='alert' id="deleteDoneAlert">
@@ -139,19 +139,17 @@ require "../fillCombo.php"; ?>
         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
       </div>
         <div class="table-responsive" >
-            <table class="table table-striped table-sm " data-show-columns="true" data-height="350" id="jCat" data-unique-id="id">
+            <table class="table table-striped table-sm " data-show-columns="true" data-height="350" id="jType" data-unique-id="id">
               <thead >
                 <tr>
-                  <th scope="col" class="col-1 " data-field="id">ID</th>
-                  <th scope="col" class="col-3 ">Name</th>
-                  <th scope="col" class="col-3 ">Description</th>
-                  <th scope="col" class="col-2 ">Manager Name</th>
-                  <th scope="col" class="col-3 "></th>
+                  <th scope="col" class="col-2 " data-field="id">ID</th>
+                  <th scope="col" class="col-6 ">Name</th>
+                  <th scope="col" class="col-4 "></th>
                 </tr>
               </thead>
               <tbody>
                 <?php 
-                $sql= "select * from job_category where isactive=1";
+                $sql= "select * from job_type where isactive=1";
                 $result = mysqli_query($con,$sql);
                 while($row=mysqli_fetch_assoc($result)){
                     ?>
@@ -159,8 +157,6 @@ require "../fillCombo.php"; ?>
                 <tr>
                   <td><?php echo $row['id']; ?></td>
                   <td><?php echo $row['name']; ?></td>
-                  <td><?php echo $row['description']; ?></td>
-                  <td><?php echo $row['manager_id']; ?></td>
                   <td class="text-center">
                   <button type="button" class="btn btn-info btn-sm"  onclick="openUpdateModel(<?php echo $row['id']; ?>)" ><i class="bi bi-arrow-repeat"></i>Update</button>
                   <button type="button" class="btn btn-danger btn-sm" onclick="openDeleteModel(<?php echo $row['id']; ?>)"  ><i class="bi bi-trash"></i>Delete</button>
@@ -173,29 +169,20 @@ require "../fillCombo.php"; ?>
           </div>
     </div>
     <hr>
-    <h5 class="mb-3">Add Job Category</h5>
+    <h5 class="mb-3">Add Job Type</h5>
     <div class='alert alert-success alert-dismissible collapse' role='alert' id="addDoneAlert">
-      New Job category added..
+      New Job type added..
       <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
     </div>
     <div class="row">
     <form method="POST" action="" class="needs-validation" novalidate>
     <div class="col-12 mb-3">
               <label  class="form-label">Name</label>
-              <input type="text" class="form-control" id="aname" name="aname" placeholder="Category Name" value="" required>
+              <input type="text" class="form-control" id="aname" name="aname" placeholder="Type Name" value="" required>
               <div class="invalid-feedback">
-                Valid job category name is required.
+                Valid job type name is required.
               </div>
     </div>
-
-    <div class="col-12 mb-3">
-              <label  class="form-label">Description</label>
-              <input type="text" class="form-control" id="adescription" name="adescription" placeholder="Category Description" value="" >
-              <div class="invalid-feedback">
-                Valid job category description is required.
-              </div>
-    </div>
-
     <div class="row ">
         <div class="col-12 mb-3">
             <input class=" btn btn-primary btn-md" name="add" type="submit"  value="Add">
@@ -213,7 +200,7 @@ require "../fillCombo.php"; ?>
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">          
-          <h5 class="modal-title">Job Category Update</h5>
+          <h5 class="modal-title">Job Type Update</h5>
         </div>
         <form method="post" action="" class="needs-validation" novalidate>
         <div class="modal-body">
@@ -225,23 +212,8 @@ require "../fillCombo.php"; ?>
                 <label  class="form-label">Name</label>
                 <input type="text" class="form-control" id="uname" name="uname" value="" required>
                 <div class="invalid-feedback">
-                  Valid job category name is required.
+                  Valid job type name is required.
                 </div>
-          </div>
-          <div class="col-12 mb-3">
-                    <label  class="form-label">Description</label>
-                    <input type="text" class="form-control" id="udescription" name="udescription" value="" >
-                    <div class="invalid-feedback">
-                      Valid job category description is required.
-                    </div>
-          </div>
-          <div class="col-12 mb-3">
-                    <label  class="form-label">Manager Name</label>
-                    <select class="form-select" id="umanager" name="umanager" >
-                    <option value="0">Choose...</option>
-                    <option value="0">Choose...</option>
-                      <?php getComboValueM(); ?>
-                    </select>
           </div>
         </div>
         <div class="modal-footer">
@@ -258,7 +230,7 @@ require "../fillCombo.php"; ?>
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">          
-          <h5 class="modal-title">Job Category Delete</h5>
+          <h5 class="modal-title">Job Type Delete</h5>
         </div>
         <form method="post" action="" class="needs-validation" novalidate>
         <div class="modal-body">
@@ -278,7 +250,7 @@ require "../fillCombo.php"; ?>
 
 
   <script>
-    var $table = $('#jCat');
+    var $table = $('#jType');
 
     function buildTable($el) {
     var classes = $('.toolbar input:checked').next().text()
@@ -296,16 +268,15 @@ require "../fillCombo.php"; ?>
         
 
     function openUpdateModel(id){
-      var $table = $('#jCat')
+      var $table = $('#jType')
       var data=JSON.parse(JSON.stringify($table.bootstrapTable('getRowByUniqueId', id)));
       $("#updateDataModal").modal("show");
         document.getElementById('uid').value =id;
         document.getElementById('uname').value = data[1];
-        document.getElementById('udescription').value = data[2];
     }
 
     function openDeleteModel(id){
-      var $table = $('#jCat')
+      var $table = $('#jType')
       var data=JSON.parse(JSON.stringify($table.bootstrapTable('getRowByUniqueId', id)));
       $("#deleteDataModal").modal("show");
         document.getElementById('did').value =id;
@@ -321,17 +292,13 @@ require "../fillCombo.php"; ?>
 if(isset($_POST['add'])){
   try{
     $name=$_POST['aname'];
-    $description = null;
-    if(!empty($_POST['adescription'])){
-        $description = $_POST['adescription'];
-    }
 
-    $sql = "insert into job_category(name,description,isactive) values ('$name','$description',1)";
+    $sql = "insert into job_type(name,isactive) values ('$name',1)";
     if(mysqli_query($con,$sql)){
       echo "<script>
       $('#addDoneAlert').fadeIn(10);
       </script>";
-      echo "<script>window.location.href='jobCategory.php';</script>";
+      echo "<script>window.location.href='jobType.php';</script>";
       exit;
     }else{
       echo "Error: " . $sql . "<br>" . mysqli_error($con);
@@ -347,17 +314,12 @@ if(isset($_POST['updatem'])){
   try{
     $id=$_POST['uid'];
     $name=$_POST['uname'];
-    $description = null;
-    if(!empty($_POST['udescription'])){
-        $description = $_POST['udescription'];
-    }
-    //$managerid = $_POST['umanager'];
-    $sql="update job_category set name ='$name', description='$description', manager_id=NULL where id=$id ";
+    $sql="update job_type set name ='$name' where id=$id ";
     if(mysqli_query($con,$sql)){
       echo "<script>
       $('#updateDoneAlert').fadeIn(10);
       </script>";
-      echo "<script>window.location.href='jobCategory.php';</script>";
+      echo "<script>window.location.href='jobType.php';</script>";
       exit;
     }else{
       echo "Error: " . $sql . "<br>" . mysqli_error($con);
@@ -371,12 +333,12 @@ if(isset($_POST['updatem'])){
 if(isset($_POST['deletem'])){
   try{
     $id=$_POST['did'];
-    $sql="update job_category set isactive=0 where id=$id ";
+    $sql="update job_type set isactive=0 where id=$id ";
     if(mysqli_query($con,$sql)){
       echo "<script>
       $('#deleteDoneAlert').fadeIn(10);
       </script>";
-      echo "<script>window.location.href='jobCategory.php';</script>";
+      echo "<script>window.location.href='jobType.php';</script>";
       exit;
     }else{
       echo "Error: " . $sql . "<br>" . mysqli_error($con);

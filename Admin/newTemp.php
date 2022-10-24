@@ -10,10 +10,19 @@
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="..\assets\css\jobslanka.css" rel="stylesheet">
     <link href="..\assets\css\dashboard.css" rel="stylesheet">
-    
+    <link href="..\assets\css\bootstrap-table.min.css" rel="stylesheet">
+    <link href="..\assets\css\bootstrap-table-sticky-header.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    <script src="..\assets\js\bootstrap.bundle.min.js"></script>
+    <script src="..\assets\js\feather.js"></script>
+    <script src="..\assets\js\jquery-3.6.1.min.js"></script>
+    <script src="..\assets\js\bootstrap-table.min.js"></script>
+    <script src="..\assets\js\bootstrap-table-sticky-header.js"></script>
+
 </head>
 <body>
-    
+
 <header class="navbar navbar-dark sticky-top bg-light flex-md-nowrap p-0 shadow">
   <a href="..\index.php" class="d-flex align-items-center mb-3 mb-md-0 pv-3 px-3 me-md-auto link-dark text-decoration-none">
                   <img src="..\Images\logo_noBack.png"
@@ -116,13 +125,89 @@
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-         
+     
+    <h1 class="h2 mt-3">Job category</h1></br>
+    <div class="row">
+        <div class="table-responsive" >
+            <table class="table table-striped table-sm " data-show-columns="true" data-height="300" id="jCat">
+              <thead >
+                <tr>
+                  <th scope="col" class="col-1 ">ID</th>
+                  <th scope="col" class="col-3 ">Name</th>
+                  <th scope="col" class="col-3 ">Description</th>
+                  <th scope="col" class="col-2 ">Manager Name</th>
+                  <th scope="col" class="col-3 "></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php 
+                $sql= "select * from job_category";
+                $result = mysqli_query($con,$sql);
+                while($row=mysqli_fetch_assoc($result)){
+                    ?>
+                
+                <tr>
+                  <td><?php echo $row['id']; ?></td>
+                  <td><?php echo $row['name']; ?></td>
+                  <td><?php echo $row['description']; ?></td>
+                  <td><?php echo $row['manager_id']; ?></td>
+                  <td><input type="button" value="Update" class="btn btn-secondary btn-sm"/></td>
+                </tr>
+                <?php }
+                ?>
+              </tbody>
+            </table>
+          </div>
+    </div>
+    <hr>
+    <h5 class="mb-3">Add Job Category</h5>
+    <div class="row">
+    <form method="POST" action="" class="needs-validation" novalidate>
+    <div class="col-12 mb-3">
+              <label  class="form-label">Job Category Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Category Name" value="" required>
+              <div class="invalid-feedback">
+                Valid job category name is required.
+              </div>
+    </div>
+
+    <div class="col-12 mb-3">
+              <label  class="form-label">Job Category Description</label>
+              <input type="text" class="form-control" id="description" placeholder="Category Description" value="" required>
+              <div class="invalid-feedback">
+                Valid job category description is required.
+              </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-12 mb-3">
+            <input class=" btn btn-primary btn-md" type="submit" value="Add">
+        </div>
+    </div>
+
+    </form>    
+    </div>        
     </main>
   </div>
-</div>
+  </div>
 
-    <script src="..\assets\js\bootstrap.bundle.min.js"></script>
-    <script src="..\assets\js\feather.js"></script>
-      
+  <script>
+        var $table = $('#jCat');
+
+            function buildTable($el) {
+            var classes = $('.toolbar input:checked').next().text()
+
+            $el.bootstrapTable('destroy').bootstrapTable({
+                showFullscreen: true,
+                search: true,
+                stickyHeader: true
+            })
+            };
+
+            $(function() {
+                buildTable($table)
+            })
+    </script> 
+
   </body>
 </html>
