@@ -116,68 +116,7 @@
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-     
-    <h1 class="h2 mt-3">Job category</h1></br>
-    <div class="row">
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Manager Name</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php 
-                $sql= "select * from job_category";
-                $result = mysqli_query($con,$sql);
-                while($row=mysqli_fetch_assoc($result)){
-                    ?>
-                
-                <tr>
-                  <td><?php echo $row['id']; ?></td>
-                  <td><?php echo $row['name']; ?></td>
-                  <td><?php echo $row['description']; ?></td>
-                  <td><?php echo $row['manager_id']; ?></td>
-                  <td><input type="button" value="Update" class="btn btn-secondary btn-sm"/></td>
-                </tr>
-                <?php }
-                ?>
-              </tbody>
-            </table>
-          </div>
-    </div>
-    <hr>
-    <h5 class="mb-3">Add Job Category</h5>
-    <div class="row">
-    <form method="POST" action="" class="needs-validation" novalidate>
-    <div class="col-12 mb-3">
-              <label  class="form-label">Job Category Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Category Name" value="" required>
-              <div class="invalid-feedback">
-                Valid job category name is required.
-              </div>
-    </div>
-
-    <div class="col-12 mb-3">
-              <label  class="form-label">Job Category Description</label>
-              <input type="text" class="form-control" id="description" placeholder="Category Description" value="" required>
-              <div class="invalid-feedback">
-                Valid job category description is required.
-              </div>
-    </div>
-
-    <div class="row ">
-        <div class="col-12 mb-3">
-            <input class=" btn btn-primary btn-md" type="submit" value="Add">
-        </div>
-    </div>
-
-    </form>    
-    </div>        
+         
     </main>
   </div>
 </div>

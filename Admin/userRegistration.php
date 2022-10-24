@@ -59,13 +59,19 @@
           white-space: nowrap;
           -webkit-overflow-scrolling: touch;
         }
+
+        .sidebar-sticky {
+          height: calc(100vh - 48px);
+          overflow-x: hidden;
+          overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        }
       </style>
 
 </head>
 <body>
 
 <div class="row">
-<main class="col-md-3 col-lg-2">
+<main class="col-md-3 col-lg-2 ">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar sidebar-sticky " style="width: 250px; height:100vh;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
           <a href="index.php">
