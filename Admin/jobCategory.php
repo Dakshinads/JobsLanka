@@ -6,7 +6,7 @@ require "../fillCombo.php"; ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Jobs Lanka Job category</title>
-
+    <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
     
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="..\assets\css\jobslanka.css" rel="stylesheet">
@@ -41,13 +41,13 @@ require "../fillCombo.php"; ?>
       <div class="position-sticky pt-3 sidebar-sticky">     
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="#">
+            <a class="nav-link " aria-current="page" href="adminDash.php">
               <span data-feather="home" class="align-text-bottom"></span>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="users.php">
               <span data-feather="users" class="align-text-bottom"></span>
               Users
             </a>
@@ -145,13 +145,13 @@ require "../fillCombo.php"; ?>
                   <th scope="col" class="col-1 " data-field="id">ID</th>
                   <th scope="col" class="col-3 ">Name</th>
                   <th scope="col" class="col-3 ">Description</th>
-                  <th scope="col" class="col-2 ">Manager Name</th>
+                  <th scope="col" class="col-2 ">Manager Name with ID</th>
                   <th scope="col" class="col-3 "></th>
                 </tr>
               </thead>
               <tbody>
                 <?php 
-                $sql= "select * from job_category where isactive=1";
+                $sql= "select j.*,s.name as managerName from job_category as j left join staff as s on j.manager_id =s.nic where j.isactive=1 ";
                 $result = mysqli_query($con,$sql);
                 while($row=mysqli_fetch_assoc($result)){
                     ?>
@@ -160,7 +160,9 @@ require "../fillCombo.php"; ?>
                   <td><?php echo $row['id']; ?></td>
                   <td><?php echo $row['name']; ?></td>
                   <td><?php echo $row['description']; ?></td>
-                  <td><?php echo $row['manager_id']; ?></td>
+                  <td><?php 
+                  if($row['managerName']!="")
+                    echo $row['managerName']."-".$row['manager_id']; ?></td>
                   <td class="text-center">
                   <button type="button" class="btn btn-info btn-sm"  onclick="openUpdateModel(<?php echo $row['id']; ?>)" ><i class="bi bi-arrow-repeat"></i>Update</button>
                   <button type="button" class="btn btn-danger btn-sm" onclick="openDeleteModel(<?php echo $row['id']; ?>)"  ><i class="bi bi-trash"></i>Delete</button>
@@ -209,7 +211,7 @@ require "../fillCombo.php"; ?>
   </div>
 
 <!-- Update Model -->
-  <div class="modal fade" id="updateDataModal" role="dialog">
+  <div class="modal fade" id="updateDataModal"  role="dialog">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">          
@@ -238,15 +240,14 @@ require "../fillCombo.php"; ?>
           <div class="col-12 mb-3">
                     <label  class="form-label">Manager Name</label>
                     <select class="form-select" id="umanager" name="umanager" >
-                    <option value="0">Choose...</option>
-                    <option value="0">Choose...</option>
+                    <option value="0">None</option>
                       <?php getComboValueM(); ?>
                     </select>
           </div>
         </div>
         <div class="modal-footer">
           <input type="submit" class="btn btn-info" name="updatem"  value="Update">
-          <button type="button" class="btn btn-default" onclick="$('#updateDataModal').modal('hide');">Close</button>
+          <button type="button" class="btn btn-default" onclick="$('#updateDataModal').modal('hide');clearOption();">Close</button>
         </div>
         </form> 
       </div>
@@ -294,14 +295,35 @@ require "../fillCombo.php"; ?>
         buildTable($table)
     });
         
-
+    var createdOptionValue='';
     function openUpdateModel(id){
       var $table = $('#jCat')
       var data=JSON.parse(JSON.stringify($table.bootstrapTable('getRowByUniqueId', id)));
-      $("#updateDataModal").modal("show");
+      $('#updateDataModal').modal({backdrop: 'static', keyboard: false});
+      $('#updateDataModal').modal("show");
         document.getElementById('uid').value =id;
         document.getElementById('uname').value = data[1];
         document.getElementById('udescription').value = data[2];
+        managerAr =data[3].split("-");
+        createdOptionValue='';
+
+        if(managerAr.length>1){
+          var x = document.getElementById("umanager");
+          var option = document.createElement("option");
+          option.text = managerAr[0];
+          option.value = managerAr[managerAr.length-1];
+          option.selected = true;
+          x.add(option);
+          createdOptionValue=managerAr[1];
+        }
+        
+    }
+
+    function clearOption(){
+        if(createdOptionValue.length>1){
+          $("#umanager option[value='"+createdOptionValue+"']").remove();
+        }
+        
     }
 
     function openDeleteModel(id){
@@ -351,10 +373,20 @@ if(isset($_POST['updatem'])){
     if(!empty($_POST['udescription'])){
         $description = $_POST['udescription'];
     }
-    //$managerid = $_POST['umanager'];
-    $sql="update job_category set name ='$name', description='$description', manager_id=NULL where id=$id ";
+    $managerid='';
+
+    $sql="";
+    echo "------------------------------------------------------".$_POST['umanager'];
+    if($_POST['umanager']>0){
+      $managerid = $_POST['umanager'];
+      $sql="update job_category set name ='$name', description='$description', manager_id='$managerid' where id=$id ";
+    }else{
+      $sql="update job_category set name ='$name', description='$description', manager_id=NULL where id=$id ";
+    }
+      
     if(mysqli_query($con,$sql)){
       echo "<script>
+      clearOption();
       $('#updateDoneAlert').fadeIn(10);
       </script>";
       echo "<script>window.location.href='jobCategory.php';</script>";
@@ -371,7 +403,7 @@ if(isset($_POST['updatem'])){
 if(isset($_POST['deletem'])){
   try{
     $id=$_POST['did'];
-    $sql="update job_category set isactive=0 where id=$id ";
+    $sql="update job_category set isactive=0, manager_id=NULL where id=$id ";
     if(mysqli_query($con,$sql)){
       echo "<script>
       $('#deleteDoneAlert').fadeIn(10);

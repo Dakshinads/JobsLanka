@@ -24,7 +24,7 @@ function getComboValue($name){
 function getComboValueM(){
     global $con;
     try{
-            $sql = "select nic, name from staff  ";
+            $sql = "select s.nic, s.name from staff as s, job_role as j where s.isactive=1 and j.id=s.job_role_id and j.name='Manager' and s.nic NOT IN( select IFNULL(jc.manager_id,0) from job_category as jc);";
             $result=mysqli_query($con,$sql);
                 while($row=mysqli_fetch_assoc($result)){
                     $value = $row['nic'];

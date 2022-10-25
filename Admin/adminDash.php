@@ -1,141 +1,141 @@
+<?php require "../DBCon.php";
+require "../fillCombo.php"; ?>
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Admin</title>
+    <title>Jobs Lanka Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
+    
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="..\assets\css\jobslanka.css" rel="stylesheet">
+    <link href="..\assets\css\dashboard.css" rel="stylesheet">
+    <link href="..\assets\css\bootstrap-table.min.css" rel="stylesheet">
+    <link href="..\assets\css\bootstrap-table-sticky-header.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
-    
-    <style>
-        .bd-placeholder-img {
-          font-size: 1.125rem;
-          text-anchor: middle;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          user-select: none;
-        }
-  
-        @media (min-width: 768px) {
-          .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-          }
-        }
-  
-        .b-example-divider {
-          height: 3rem;
-          background-color: rgba(0, 0, 0, .1);
-          border: solid rgba(0, 0, 0, .15);
-          border-width: 1px 0;
-          box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-  
-        .b-example-vr {
-          flex-shrink: 0;
-          width: 1.5rem;
-          height: 100vh;
-        }
-  
-        .bi {
-          vertical-align: -.125em;
-          fill: currentColor;
-        }
-  
-        .nav-scroller {
-          position: relative;
-          z-index: 2;
-          height: 2.75rem;
-          overflow-y: hidden;
-        }
-  
-        .nav-scroller .nav {
-          display: flex;
-          flex-wrap: nowrap;
-          padding-bottom: 1rem;
-          margin-top: -1px;
-          overflow-x: auto;
-          text-align: center;
-          white-space: nowrap;
-          -webkit-overflow-scrolling: touch;
-        }
-      </style>
+    <script src="..\assets\js\bootstrap.bundle.min.js"></script>
+    <script src="..\assets\js\feather.js"></script>
+    <script src="..\assets\js\jquery-3.6.1.min.js"></script>
+    <script src="..\assets\js\bootstrap-table.min.js"></script>
+    <script src="..\assets\js\bootstrap-table-sticky-header.js"></script>
+   
 
 </head>
 <body>
 
-<div class="row">
-<main class="col-md-3 col-lg-2">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar sidebar-sticky " style="width: 250px; height:100vh;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-          <a href="index.php">
+<header class="navbar navbar-dark sticky-top bg-light flex-md-nowrap p-0 shadow">
+  <a href="..\index.php" class="d-flex align-items-center mb-3 mb-md-0 pv-3 px-3 me-md-auto link-dark text-decoration-none">
                   <img src="..\Images\logo_noBack.png"
-                    style="width: 200px;" class="pb-3 py-3" alt="logo"></a>
+                    style="width: 200px;"  class="pb-3 py-3" alt="logo">
         </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+  <button class="navbar-toggler position-absolute d-md-none collapsed bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3 sidebar-sticky">     
+        <ul class="nav flex-column">
+          <li class="nav-item ">
+            <a class="nav-link active" aria-current="page" href="adminDash.php">
+              <span data-feather="home" class="align-text-bottom"></span>
               Dashboard
             </a>
           </li>
-          <li>
-            <a href="userRegistration.php" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+          <li class="nav-item">
+            <a class="nav-link" href="users.php">
+              <span data-feather="users" class="align-text-bottom"></span>
               Users
             </a>
           </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-              Table
-            </a>
+
+          <li class="nav-item">
+          <div class="accordion"id="ac1" >
+            <div class="">
+                  <button class="accordion-button collapsed py-0 px-0 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                      aria-expanded="true" aria-controls="collapseOne">
+                      <a class="nav-link " href="#">
+                        <span data-feather="database" class="align-text-bottom"></span>
+                        Table
+                      </a>
+                  </button>
+              <div id="collapseOne" class="accordion-collapse collapse hide" data-bs-parent="#ac1">
+                  <div class=" py-0 px-3">
+                      <ul class="nav flex-column">
+                        <li class="nav-item">
+                          <a class="nav-link" href="jobCategory.php">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            Job Category
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link " href="jobType.php">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            Job Type
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="location.php">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            Location
+                          </a>
+                        </li>                                                
+                      </ul>
+                  </div>
+              </div>
+            </div>
+          </div>
           </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-              Feedback
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="shopping-bag" class="align-text-bottom"></span>
               Jobs
             </a>
           </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="mail" class="align-text-bottom"></span>
               Inquiry
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file" class="align-text-bottom"></span>
+              Feedback
+            </a>
+          </li>
+          <hr/>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="user" class="align-text-bottom"></span>
+              <img src="https://github.com/mdo.png" alt="mdo" width="40" height="40" class="rounded-circle">My Profile 
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="log-out" class="align-text-bottom"></span>
+              Log out
+            </a>
+          </li>
         </ul>
-        <hr>
-        <div class="dropdown">
-          <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong>Username</strong>
-          </a>
-          <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
-    </div>
-
-</main>
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">User Registration</h1>
       </div>
+    </nav>
 
-</main>
-</div>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+     
+    <h1 class="h2 mt-3">Dashboard</h1></br>        
+    </main>
+  </div>
+  </div>
 
-<script src="..\assets\js\bootstrap.bundle.min.js"></script>
-</body>
+
+
+
+   <script src="..\assets\js\form-validations.js"></script>
+  </body>
 </html>

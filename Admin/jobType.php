@@ -6,7 +6,7 @@ require "../fillCombo.php"; ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Jobs Lanka Job Type</title>
-
+    <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
     
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="..\assets\css\jobslanka.css" rel="stylesheet">
@@ -41,13 +41,13 @@ require "../fillCombo.php"; ?>
       <div class="position-sticky pt-3 sidebar-sticky">     
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="#">
+            <a class="nav-link " aria-current="page" href="adminDash.php">
               <span data-feather="home" class="align-text-bottom"></span>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="users.php">
               <span data-feather="users" class="align-text-bottom"></span>
               Users
             </a>

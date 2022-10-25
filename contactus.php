@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Jobs Lanka Contact Us</title>
+    <link rel="icon" type="image/x-icon" href="images/logo-no-background.ico">
     <link href="assets\css\bootstrap.min.css" rel="stylesheet">
     <link href="assets\css\jobslanka.css" rel="stylesheet">
 
