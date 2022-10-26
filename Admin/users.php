@@ -562,7 +562,8 @@ if(isset($_POST['updatem'])){
         if(isset($_POST['activePass'])){
             $pass = md5($_POST['pw']);
             $sql = "update staff set name='$name',address='$address',email='$email',phone_no='$cno',gender='$gender',password='$pass',
-            image='$pp',job_role_id=$jrole where nic='$nic'";        
+            image='$pp',job_role_id=$jrole where nic='$nic'";  
+            // update user details with password      
         }
         else{
             $sql="update staff set name='$name',address='$address',email='$email',phone_no='$cno',gender='$gender',

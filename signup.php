@@ -6,6 +6,11 @@ require("sajax.php");
 sajax_init();
 sajax_export("verifyEmail");
 sajax_handle_client_request();
+
+session_start();
+if(isset($_SESSION['userData'])){
+  echo "need to develop(user profile)";
+}else{
 ?>
 <!doctype html>
 <html lang="en">
@@ -491,6 +496,7 @@ sajax_handle_client_request();
 </body>
 </html>
 <?php
+}
 
 function verifyEmail($vcode){
     

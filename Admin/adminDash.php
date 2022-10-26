@@ -113,7 +113,7 @@ require "../fillCombo.php"; ?>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="user" class="align-text-bottom"></span>
-              <img src="https://github.com/mdo.png" alt="mdo" width="40" height="40" class="rounded-circle">My Profile 
+              My Profile 
             </a>
           </li>
           <li class="nav-item">

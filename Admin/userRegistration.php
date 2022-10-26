@@ -300,6 +300,7 @@ if(isset($_POST['register'])){
   ('$nic','$name','$address','$email','$cno','$gender','$pass','$pp',$jrole,1)";
 
   if(mysqli_query($con,$sql)){
+    // mail send to user
     echo "<script>window.location.href='users.php';</script>";
   }else{
     echo "Error: " . $sql . "<br>" . mysqli_error($con);
