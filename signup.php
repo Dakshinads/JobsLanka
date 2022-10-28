@@ -9,7 +9,11 @@ sajax_handle_client_request();
 
 session_start();
 if(isset($_SESSION['userData'])){
-  echo "need to develop(user profile)";
+  if($_SESSION['atype']=="Employer"){
+    header("location: myProfileE.php");
+  }else if($_SESSION['atype']=="JobSeeker"){
+    echo "need to develop(user profile)";
+  }
 }else{
 ?>
 <!doctype html>
@@ -342,7 +346,7 @@ if(isset($_SESSION['userData'])){
             <form method="POST" action="" onsubmit="return validate_formj();" enctype="multipart/form-data" class="needs-validation" id="frmJobSeeker" novalidate>
             <div id="jdiv">
             <div class="row ">
-            <div class="col-sm-6 mb-3">
+            <div class="col-sm-12 mb-3">
               <label  class="form-label">NIC</label>
               <input type="text" class="form-control" id="jnic" name="jnic" placeholder="NIC" maxlength="12" minlength="10" value="" required>
               <div class="invalid-feedback">

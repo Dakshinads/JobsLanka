@@ -1,7 +1,11 @@
 <?php include "DBCon.php";
 session_start();
 if(isset($_SESSION['userData'])){
-    echo "need to develop(user profile)";
+    if($_SESSION['atype']=="Employer"){
+      header("location: myProfileE.php");
+    }else if($_SESSION['atype']=="JobSeeker"){
+      echo "need to develop(user profile)";
+    }
 }else{
 
  ?>
@@ -89,9 +93,10 @@ if(isset($_SESSION['userData'])){
             <div class="col-lg-5 d-flex align-items-center gradient-custom-2">
               <div class="text-white px-3 py-4 p-md-5 mx-md-4">
                 <h4 class="mb-4 text-center">The Home of Your Dream Job</h4>
-                <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p class="small mb-0">Welcome to join our job portal. We always strive to provide reliable and prompt services to you. 
+                  We wish you the best of luck in finding a suitable job for those of you who are looking for a job with the aim of achieving 
+                  your future goals. And it is our wish that you who join us as an employer will get an efficient 
+                  and good employee for your company.</p>
               </div>
             </div>
           </div>

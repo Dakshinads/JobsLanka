@@ -55,7 +55,7 @@ if($_SESSION['atype']=="JobSeeker"){
           <span><?php if(isset($_SESSION['userData'])){echo $_SESSION['userData']['name'];} ?></span>
           </a>
           <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="">My Profile</a></li>
+            <li><a class="dropdown-item" href="myProfileJ.php">My Profile</a></li>
             <li><a class="dropdown-item" href="#">My Jobs</a></li>
             <li><a class="dropdown-item" href="#">Saved Jobs</a></li>
             <li><hr class="dropdown-divider"></li>

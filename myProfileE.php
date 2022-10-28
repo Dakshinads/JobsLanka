@@ -1,7 +1,7 @@
 <?php
 require "DBCon.php";
 session_start();
-if(isset($_SESSION['userData'])){
+if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
   $email=$_SESSION['userData']['email'];
   $sql="select * from employer where email='$email'";
   $result = mysqli_query($con,$sql);
@@ -193,7 +193,6 @@ if(isset($_POST['save'])){
       else{
         $sql = "update employer set name='$name',phone_no=$cno, website='$web',logo='$pp' where email='$email'"; 
       }
-    echo $sql;
       if(mysqli_query($con,$sql)){
           echo "<script>
           $('#updateAlert').fadeIn(10);
