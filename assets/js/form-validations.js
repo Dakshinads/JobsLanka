@@ -7,7 +7,6 @@
     form.addEventListener(
       'submit',
       function (event) {
-        
         if (!form.checkValidity() || !checkPasswordConfirmation(form.querySelectorAll("input[type='password']")[0].id,
         form.querySelectorAll("input[type='password']")[1].id)) {
           

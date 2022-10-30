@@ -36,7 +36,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
   <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
   </div>
 
-  <form method="POST" action="" onsubmit="" class="needs-validation" id="frmJobSeeker" enctype="multipart/form-data" novalidate>
+  <form method="POST" action="" onsubmit="return isProvideDescriptionOrImage();" class="needs-validation" id="frmJobSeeker" enctype="multipart/form-data" novalidate>
 
     <div class="row ">
         <div class="col-sm-12 mb-3">
@@ -83,7 +83,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
         <div class="col-sm-6 mb-3">
             <label  class="form-label">Closing Date</label>
             <div class="input-group " >
-                <input type="text" class="form-control" id="datepicker" name="datepicker"/>
+                <input type="text" class="form-control" id="closingDate" name="closingDate" required/>
             </div>
             <div class="invalid-feedback">
             Please provide a valid Closing Date.
@@ -93,7 +93,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     <div class="row">
         <div class="col-sm-12 mb-3">
         <label  class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Job Description..." minlength="" required></textarea>
+        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Job Description..." minlength="" ></textarea>
         <div class="invalid-feedback">
             Please provide a Job Description or Job Post Image.
         </div>
@@ -102,7 +102,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     <div class="row">
         <div class="col-sm-12 mb-3">
         <label class="form-label">Job Post Image</label>
-              <input class="form-control" id="pp" name="pp" type="file" accept="image/png, image/jpeg" onchange="logoValidation('pp')">
+              <input class="form-control" id="jobPostImage" name="jobPostImage" type="file" accept="image/png, image/jpeg" onchange="logoValidation('jobPostImage')">
               <div class="invalid-feedback">
                 File type must be .png or .jpeg
               </div>
@@ -111,7 +111,8 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
 
     <div class="row ">
       <div class="col-6 mb-5">
-          <input class=" btn btn-primary btn-md" type="submit" name="save" value="Send to Approval">
+        <div id="response"></div>
+        <input class=" btn btn-primary btn-md" type="submit" name="send" value="Send to Approval">
       </div>
     </div>
   </form>
@@ -133,7 +134,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     monthAfterDate.setDate(monthAfterDate.getDate() +30);
 
 $(document).ready(function(){
-    $('#datepicker').datepicker({
+    $('#closingDate').datepicker({
         format: "yyyy-mm-dd",
         startDate: new Date(),
         endDate: monthAfterDate
@@ -141,8 +142,54 @@ $(document).ready(function(){
 });
 
 tinymce.init({
-    selector: '#description'
+    selector: '#description',
+    plugins: 'wordcount',
 });
+
+function isProvideDescriptionOrImage() {
+    var filepath =document.getElementById('jobPostImage').value;
+    const wordcount = tinymce.activeEditor.plugins.wordcount;
+    var description = wordcount.body.getCharacterCount();
+    if(filepath.length>0 || description>0){
+        if(filepath.length==0 && description<100){
+            $("#response").animate({
+                height: '+=72px'
+            }, 300);
+            $('<div class="alert alert-danger">Your Job Description must be more than 100 charaters </div>').hide().appendTo('#response').fadeIn(1000);
+        
+            $(".alert").delay(3000).fadeOut(
+                "normal",
+                function(){
+                    $(this).remove();
+                });
+        
+            $("#response").delay(4000).animate({
+                height: '-=72px'
+            }, 300);
+                return false;
+            return false;
+        }else{
+            return true;
+        }
+    }else{
+        $("#response").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-danger">Please provide Job Description or Job Post Image </div>').hide().appendTo('#response').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#response").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+        return false;
+      }
+
+}
 </script>
 </body>
 </html>
@@ -152,7 +199,68 @@ else{
   header('location:login.php');
 }
 
-if(isset($_POST['save'])){
-    echo $_POST['description'];
+if(isset($_POST['send']) ){
+    try {
+       $title = $_POST['title'];
+       $jCategory = $_POST['jcategory'];
+       $jType = $_POST['jtype'];
+       $location = $_POST['location'];
+       $closingDate = $_POST['closingDate'] ;
+       $description = '';
+       if(strlen($_POST['description'])>0){
+        $description = $_POST['description'];
+        $description = str_replace('\'',' ',$description);
+        $description = str_replace('"',' ',$description);
+       }
+       $jobPostImage ="";
+       if($_FILES['jobPostImage']["size"] !==0) {
+       $file = $_FILES['jobPostImage'];
+     
+       $fileName = $_FILES['jobPostImage']['name'];
+       $fileTmpName = $_FILES['jobPostImage']['tmp_name'];
+       $fileSize = $_FILES['jobPostImage']['size'];
+       $fileError = $_FILES['jobPostImage']['error'];
+       $fileType = $_FILES['jobPostImage']['type'];
+     
+       $fileExt = explode('.',$fileName);
+       $fileActualExt = strtolower(end($fileExt));
+     
+       $allowed =array('jpg','jpeg','png');
+     
+       if(in_array($fileActualExt,$allowed)){
+           if($fileError === 0){
+               if($fileSize < 5000000){
+                   $fileNameNew = uniqid('', true).".".$fileActualExt;
+                   $fileDestination = 'Uploads/JobPostImages/'.$fileNameNew;
+                   move_uploaded_file($fileTmpName,$fileDestination);
+                   $jobPostImage = $fileNameNew;
+               }else{
+                   echo "Your file is too big!";
+               }
+           }else{
+               echo " There was an error uploading your file!";
+           }
+       }
+       }
+       $employerId=$_SESSION['userData']['id'];
+       
+
+       $sql = "insert into job (title,description,image,opening_date,closing_date,active,status,reason,job_category_id ,job_type_id,employer_id,location_id)
+               values ('$title','$description','$jobPostImage',curdate(),'$closingDate',0,0,NULL,$jCategory,$jType,$employerId,$location)";
+       if(mysqli_query($con,$sql)){
+        unset($_POST);
+        unset($sql);
+            echo "<script>
+            $('#postAlert').fadeIn(100);
+            window.location.href ='createJob.php'
+            </script>";
+            
+       }else{
+            echo "Error: " . $sql . "<br>" . mysqli_error($con);
+       }
+
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 ?>
