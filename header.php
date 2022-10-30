@@ -26,7 +26,6 @@ if($_SESSION['atype']=="JobSeeker"){
 <!-- non-login users dropdown -->
 <?php if($profile==0){ ?>
     <div class="col-md-3 text-end">
-    <button type="button" class="btn btn-outline-primary me-2"><b>Post a Job</b></button>
     <a href="signup.php"><button type="button" class="btn btn-warning me-2">Sign up</button></a>
     <a href="login.php"><button type="button" class="btn btn-primary">Log in</button></a>
     </div>
@@ -34,14 +33,16 @@ if($_SESSION['atype']=="JobSeeker"){
 
 <!-- Employer dropdown -->
 <?php if($profile==1){ ?>
-        <div class="dropdown text-end">
+        <div class="dropdown text-end">        
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <span><?php if(isset($_SESSION['userData'])){echo $_SESSION['userData']['name'];} ?></span>
           </a>
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="myProfileE.php">My Profile</a></li>
-            <li><a class="dropdown-item" href="#">Jobs</a></li>
+            <li><a class="dropdown-item" href="#">My Jobs</a></li>
             <li><a class="dropdown-item" href="#">Interview</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Give a Feedback</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><button class="dropdown-item" type="button" onclick="window.location.href='logout.php'">Log Out</a></li>
           </ul>
@@ -58,6 +59,8 @@ if($_SESSION['atype']=="JobSeeker"){
             <li><a class="dropdown-item" href="myProfileJ.php">My Profile</a></li>
             <li><a class="dropdown-item" href="#">My Jobs</a></li>
             <li><a class="dropdown-item" href="#">Saved Jobs</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Give a Feedback</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><button class="dropdown-item" type="button" onclick="window.location.href='logout.php'">Log Out</a></li>
           </ul>
