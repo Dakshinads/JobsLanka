@@ -2,8 +2,13 @@
 require "DBCon.php";
 require "fillCombo.php";
 session_start();
-if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
-  $email=$_SESSION['userData']['id'];
+if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && $_COOKIE['uJobID']){
+    $jobRefNo = $_COOKIE['uJobID'];
+    $sql = "select j.*,jc.name as categoryname, jt.name as typename from job as j, job_category as jc, job_type as jt where job_ref_no =$jobRefNo and j.job_category_id=jc.id and j.job_type_id=jt.id";
+    $row;
+    if($result = mysqli_query($con,$sql)){
+        $row=mysqli_fetch_assoc($result);      
+    } 
 
 
 ?>
@@ -12,7 +17,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Create Job</title>
+    <title>Jobs Lanka Update Job</title>
     <link rel="icon" type="image/x-icon" href="images/logo-no-background.ico">
     
     <link href="assets\css\bootstrap.min.css" rel="stylesheet">
@@ -29,7 +34,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
 <main class="container" >
 <div class="row">
   <div class="col-md-8 col-lg-12 ">
-  <h4 class="mt-3">Create Job</h4>
+  <h4 class="mt-3">Update Job</h4>
   <hr class="my-4">
   <div class='alert alert-success alert-dismissible collapse' role='alert' id="postAlert">
     Your Job is send to approval.  
@@ -37,11 +42,16 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
   </div>
 
   <form method="POST" action="" onsubmit="return isProvideDescriptionOrImage();" class="needs-validation" id="frmJobSeeker" enctype="multipart/form-data" novalidate>
-
+  <div class="row ">
+        <div class="col-sm-12 mb-3">
+            <label  class="form-label">Job Reference No</label>
+            <input type="text" class="form-control" id="jobRefNo" name="jobRefNo" value="<?php echo $row['job_ref_no']; ?>" readonly>
+        </div>
+    </div>
     <div class="row ">
         <div class="col-sm-12 mb-3">
             <label  class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="Title" minlength="2" value="" required>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title" minlength="2" value="<?php echo $row['title']; ?>"  required>
             <div class="invalid-feedback">
             Valid Title is required.
             </div>
@@ -52,7 +62,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
             <label  class="form-label">Job Category</label>
             <select class="form-select" id="jcategory" name="jcategory" required>
             <option value="">Choose...</option>
-            <?php getComboValue('job_category'); ?>
+            <?php getComboValueWithValue('job_category',$row['job_category_id']); ?>
             </select>
             <div class="invalid-feedback">
             Please provide a valid Job Category.
@@ -62,7 +72,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
             <label  class="form-label">Job Type</label>
             <select class="form-select" id="jtype" name="jtype" required>
             <option value="">Choose...</option>
-            <?php getComboValue('job_type'); ?>
+            <?php getComboValueWithValue('job_type',$row['job_type_id']); ?>
             </select>
             <div class="invalid-feedback">
             Please provide a valid Job Type.
@@ -74,7 +84,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
             <label  class="form-label">Location</label>
             <select class="form-select" id="location" name="location" required>
             <option value="">Choose...</option>
-            <?php getComboLocation(); ?>
+            <?php getSelectedComboLocation($row['location']); ?>
             </select>
             <div class="invalid-feedback">
             Please provide a valid Location.
@@ -83,7 +93,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
         <div class="col-sm-6 mb-3">
             <label  class="form-label">Closing Date</label>
             <div class="input-group " >
-                <input type="text" class="form-control" id="closingDate" name="closingDate" required/>
+                <input type="text" class="form-control" id="closingDate" name="closingDate" value="<?php echo $row['closing_date']; ?>" required/>
             </div>
             <div class="invalid-feedback">
             Please provide a valid Closing Date.
@@ -93,7 +103,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     <div class="row">
         <div class="col-sm-12 mb-3">
         <label  class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Job Description..." minlength="" ></textarea>
+        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Job Description..." minlength="" ><?php echo $row['description']; ?></textarea>
         <div class="invalid-feedback">
             Please provide a Job Description or Job Post Image.
         </div>
@@ -101,7 +111,17 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     </div>
     <div class="row">
         <div class="col-sm-12 mb-3">
-        <label class="form-label">Job Post Image</label>
+        <label class="form-label">Current Job Post Image</label><br/>
+        <?php if(strlen($row['image'])>0){
+            $image =$row['image'];
+            echo "<img src='Uploads/JobPostImages/$image' >";
+         } ?>
+         
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-sm-12 mb-3">
+        <label class="form-label">Change Job Post Image</label>
               <input class="form-control" id="jobPostImage" name="jobPostImage" type="file" accept="image/png, image/jpeg" onchange="logoValidation('jobPostImage')">
               <div class="invalid-feedback">
                 File type must be .png or .jpeg
@@ -112,7 +132,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     <div class="row ">
       <div class="col-6 mb-5">
         <div id="response"></div>
-        <input class=" btn btn-primary btn-md" type="submit" name="send" value="Send for Approval">
+        <input class=" btn btn-primary btn-md" type="submit" name="send" value="Send Updated Job for Approval">
       </div>
     </div>
   </form>
@@ -201,6 +221,7 @@ else{
 
 if(isset($_POST['send']) ){
     try {
+       $jRefNo= $_POST['jobRefNo'];
        $title = $_POST['title'];
        $jCategory = $_POST['jcategory'];
        $jType = $_POST['jtype'];
@@ -213,6 +234,9 @@ if(isset($_POST['send']) ){
         $description = str_replace('"',' ',$description);
        }
        $jobPostImage ="";
+       if(strlen($row['image'])>0){
+            $jobPostImage =$row['image'];
+        }
        if($_FILES['jobPostImage']["size"] !==0) {
        $file = $_FILES['jobPostImage'];
      
@@ -245,14 +269,13 @@ if(isset($_POST['send']) ){
        $employerId=$_SESSION['userData']['id'];
        
 
-       $sql = "insert into job (title,description,image,opening_date,closing_date,active,status,reason,job_category_id ,job_type_id,employer_id,location)
-               values ('$title','$description','$jobPostImage',curdate(),'$closingDate',0,0,NULL,$jCategory,$jType,$employerId,'$location')";
+       $sql= "update job set title ='$title', description='$description', image ='$jobPostImage',opening_date=curdate(), closing_date='$closingDate', 
+                active=0,status=0,reason=NULL, job_category_id=$jCategory,job_type_id=$jType, location='$location' where job_ref_no=$jRefNo"; 
        if(mysqli_query($con,$sql)){
         unset($_POST);
         unset($sql);
             echo "<script>
-            $('#postAlert').fadeIn(100);
-            window.location.href ='createJob.php'
+            window.location.href ='myJobsE.php'
             </script>";
             
        }else{

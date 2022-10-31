@@ -390,7 +390,7 @@ if(isset($_SESSION['userData'])){
               <label  class="form-label">Home Town</label>
               <select class="form-select" id="jtown" name="jtown" required>
                 <option value="">Choose...</option>
-                <?php getComboValue('location'); ?>
+                <?php getComboLocation(); ?>
               </select>
               <div class="invalid-feedback">
                 Please provide a valid Home Town.
@@ -622,8 +622,8 @@ if(isset($_POST['jregister'])){
         }
     }
     }
-    $sql = "insert into job_seeker(nic,name,email,password,gender,cv,phone_no,location_id,job_category_id) Values (
-      '$nic','$name','$email','$pw','$gender','$cv',$cno,$location,$jobCategory)";
+    $sql = "insert into job_seeker(nic,name,email,password,gender,cv,phone_no,location,job_category_id) Values (
+      '$nic','$name','$email','$pw','$gender','$cv',$cno,'$location',$jobCategory)";
     if(mysqli_query($con,$sql)){
       echo "<script>
       $('#signupDoneAlert').fadeIn(100);

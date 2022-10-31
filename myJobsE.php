@@ -1,8 +1,13 @@
 <?php
 require "DBCon.php";
 require "fillCombo.php";
+require("sajax.php");     
+sajax_init();
+sajax_export("updateActiveStatus");
+sajax_handle_client_request();
+
 session_start();
-if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
+if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && isset($_COOKIE['jobID'])){
   $email=$_SESSION['userData']['id'];
 
 
@@ -29,9 +34,6 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
 <script src="assets\js\jquery-3.6.1.min.js"></script>
 <script src="assets\js\bootstrap-table.min.js"></script>
 <script src="assets\js\bootstrap-table-sticky-header.js"></script>
-<script>
-
-</script>
 
 <!-- Adding header -->
 <?php include "header.php" ?>
@@ -78,11 +80,11 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                     <?php $checkValue="";
                     $checkStatus="";
                      if($row['status']==1){
-                        if($orw['active']==1){
+                        if($row['active']==1){
                             $checkValue="checked";
                             $checkStatus = "Active";
                         }else{
-                            $checkValue="disabled";
+                            $checkValue="";
                             $checkStatus = "Inactive";
                         }
                      }else{
@@ -90,7 +92,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                         $checkStatus = "Inactive";
                      } ?>
                 <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch"  <?php echo $checkValue; ?>>
+                <input class="form-check-input" type="checkbox" role="switch" id="<?php echo 'chk_'.$row['job_ref_no'] ?>" onchange="updateActiveStatus(<?php echo $row['job_ref_no'] ?>)"  <?php echo $checkValue; ?>>
                 <label class="form-check-label" ><?php echo $checkStatus; ?></label>
                 </div></td>
 
@@ -118,8 +120,8 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                 }
                 ?></td>
                 <td class="text-center">
-                <button type="button" class="btn btn-info btn-sm"  onclick="" ><i class="bi bi-eye"></i>view</button>
-                <?php if($row['status']!=3) { ?><button type="button" class="btn btn-secondary btn-sm" onclick=""  >
+                <button type="button" class="btn btn-info btn-sm"  onclick="viewJob(<?php echo $row['job_ref_no']; ?>)" ><i class="bi bi-eye"></i>view</button>
+                <?php if($row['status']!=3) { ?><button type="button" class="btn btn-secondary btn-sm" onclick="updateJob(<?php echo $row['job_ref_no']; ?>)"  >
                     <i class="bi bi-arrow-repeat"></i>Update</button><?php } ?>
                 </td>
             </tr>
@@ -136,6 +138,24 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
         </div> 
     </div>
 </main>
+<script>
+    <?php sajax_show_javascript(); ?>
+
+    function updateActiveStatus(id) {
+        chkid="chk_"+id;
+        data="";
+        if(document.getElementById(chkid).checked){
+            data=id+"_"+1;
+        }else{
+            data=id+"_"+0;
+        }
+        x_updateActiveStatus(data,updateActiveStatus_x);
+    }
+
+    function updateActiveStatus_x(msg){
+       
+    }
+</script>
 
 <!-- Adding footer -->
 <?php include "footer.php" ?>
@@ -159,6 +179,31 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     $(function () {
         $('[data-bs-toggle="popover"]').popover()
     })
+
+    function viewJob(jobId){
+        createCookie("jobID", jobId, "1");
+        window.location.href = "viewJobE.php";
+    }
+    function updateJob(jobId){
+        createCookie("uJobID", jobId, "1");
+        window.location.href = "updateJob.php";
+    }
+
+    function createCookie(name, value, days) {
+        var expires;
+        
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toGMTString();
+        }
+        else {
+            expires = "";
+        }
+        
+        document.cookie = escape(name) + "=" + 
+            escape(value) + expires + "; path=/";
+    }
 </script>
 </body>
 </html>
@@ -168,5 +213,18 @@ else{
   header('location:login.php');
 }
 
+function updateActiveStatus($data) {
+    try{
+        global $con;
+        $valuesAr=explode("_",$data);
+        $jobId=$valuesAr[0];
+        $activeCode=$valuesAr[1];
 
+        $sql="update job set active =$activeCode where job_ref_no=$jobId";
+        mysqli_query($con,$sql);
+    }catch(Exception $e){
+        echo $e->getMessage();
+    }
+    return 1;
+}
 ?>

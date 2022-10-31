@@ -1,6 +1,10 @@
 <?php
 require "DBCon.php";
 
+$locationAr = ['All Locations','Gampaha','Matara','Galle','Hambantota','Colombo','Kaluthara','Kandy','Matale','Nuwara Eliya','Kegalle','Ratnapura','Monaragala',
+                'Badulla','Polonnaruwa','Anuradapura','Puttalam','Kurunegala','Trincomalee','Ampara','Batticola','Mullativu','Vavuniya','Mannar',
+                'Kilinochchi','Jaffna']; 
+
 function getComboValue($name){
     global $con;
     try{
@@ -55,6 +59,21 @@ function  getComboValueWithValue($name,$v){
 
     }catch(Exception $e){
         echo $e->getMessage();
+    }
+}
+
+function getComboLocation(){
+    global $locationAr;
+    foreach($locationAr as $v){
+        echo "<option value= '$v'>$v</option>";
+    }
+}
+
+function getSelectedComboLocation($value){
+    global $locationAr;
+    foreach($locationAr as $v){
+        $isSelect = ($v==$value )? "selected":"";
+        echo "<option value= '$v' $isSelect>$v</option>";
     }
 }
 ?>

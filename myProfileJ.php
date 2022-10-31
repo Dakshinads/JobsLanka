@@ -98,7 +98,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="JobSeeker"){
               <label  class="form-label">Home Town</label>
               <select class="form-select" id="town" name="town" required>
                 <option value="">Choose...</option>
-                <?php getComboValueWithValue('location',$row['location_id']); ?>
+                <?php  getSelectedComboLocation($row['location'])?>
               </select>
               <div class="invalid-feedback">
                 Please provide a valid Home Town.
@@ -229,10 +229,10 @@ if(isset($_POST['save'])){
     $sql="";
     if(isset($_POST['activePass'])){
         $pass = md5($_POST['pw']);
-        $sql = "update job_seeker set name='$name',phone_no=$cno,gender='$gender',cv='$pp',location_id=$town,job_category_id=$pjcategory, password='$pass' where email='$email'";      
+        $sql = "update job_seeker set name='$name',phone_no=$cno,gender='$gender',cv='$pp',location='$town',job_category_id=$pjcategory, password='$pass' where email='$email'";      
     }
     else{
-        $sql = "update job_seeker set name='$name',phone_no=$cno,gender='$gender',cv='$pp',location_id=$town,job_category_id=$pjcategory where email='$email'";      
+        $sql = "update job_seeker set name='$name',phone_no=$cno,gender='$gender',cv='$pp',location='$town',job_category_id=$pjcategory where email='$email'";      
     }
       if(mysqli_query($con,$sql)){
           echo "<script>
