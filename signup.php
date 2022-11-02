@@ -563,7 +563,7 @@ if(isset($_POST['oregister'])){
   }
   }
   $sql = "insert into employer(email,name,phone_no,password,website,logo) Values (
-          '$email','$organizationName',$cno,'$password','$website','$logo')";
+          '$email','$organizationName','$cno','$password','$website','$logo')";
   if(mysqli_query($con,$sql)){
       echo "<script>
       $('#signupDoneAlert').fadeIn(100);

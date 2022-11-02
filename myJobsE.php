@@ -7,7 +7,7 @@ sajax_export("updateActiveStatus");
 sajax_handle_client_request();
 
 session_start();
-if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && isset($_COOKIE['jobID'])){
+if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
   $email=$_SESSION['userData']['id'];
 
 
@@ -93,7 +93,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && isset($_COO
                      } ?>
                 <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="<?php echo 'chk_'.$row['job_ref_no'] ?>" onchange="updateActiveStatus(<?php echo $row['job_ref_no'] ?>)"  <?php echo $checkValue; ?>>
-                <label class="form-check-label" ><?php echo $checkStatus; ?></label>
+                <label class="form-check-label" id="<?php echo 'checkStatusText_'.$row['job_ref_no'] ?>" ><?php echo $checkStatus; ?></label>
                 </div></td>
 
                 <td><?php 
@@ -146,14 +146,18 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && isset($_COO
         data="";
         if(document.getElementById(chkid).checked){
             data=id+"_"+1;
+            textid="checkStatusText_"+id;
+            document.getElementById(textid).innerHTML = "Active";
         }else{
             data=id+"_"+0;
+            textid="checkStatusText_"+id;
+            document.getElementById(textid).innerHTML = "Inactive";
         }
         x_updateActiveStatus(data,updateActiveStatus_x);
     }
 
     function updateActiveStatus_x(msg){
-       
+        
     }
 </script>
 
@@ -225,6 +229,6 @@ function updateActiveStatus($data) {
     }catch(Exception $e){
         echo $e->getMessage();
     }
-    return 1;
+    return $jobId;
 }
 ?>

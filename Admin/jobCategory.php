@@ -210,74 +210,6 @@ require "../fillCombo.php"; ?>
   </div>
   </div>
 
-<!-- Update Model -->
-  <div class="modal fade" id="updateDataModal"  role="dialog">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content">
-        <div class="modal-header">          
-          <h5 class="modal-title">Job Category Update</h5>
-        </div>
-        <form method="post" action="" class="needs-validation" novalidate>
-        <div class="modal-body">
-          <div class="col-12 mb-3">
-                <label  class="form-label">ID</label>
-                <input type="text" class="form-control" id="uid" name="uid" value="" readonly>               
-          </div>
-          <div class="col-12 mb-3">
-                <label  class="form-label">Name</label>
-                <input type="text" class="form-control" id="uname" name="uname" value="" required>
-                <div class="invalid-feedback">
-                  Valid job category name is required.
-                </div>
-          </div>
-          <div class="col-12 mb-3">
-                    <label  class="form-label">Description</label>
-                    <input type="text" class="form-control" id="udescription" name="udescription" value="" >
-                    <div class="invalid-feedback">
-                      Valid job category description is required.
-                    </div>
-          </div>
-          <div class="col-12 mb-3">
-                    <label  class="form-label">Manager Name</label>
-                    <select class="form-select" id="umanager" name="umanager" >
-                    <option value="0">None</option>
-                      <?php getComboValueM(); ?>
-                    </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="submit" class="btn btn-info" name="updatem"  value="Update">
-          <button type="button" class="btn btn-default" onclick="$('#updateDataModal').modal('hide');clearOption();">Close</button>
-        </div>
-        </form> 
-      </div>
-    </div>
-  </div>
-
-<!-- Delete Model -->
-<div class="modal fade" id="deleteDataModal" role="dialog">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content">
-        <div class="modal-header">          
-          <h5 class="modal-title">Job Category Delete</h5>
-        </div>
-        <form method="post" action="" class="needs-validation" novalidate>
-        <div class="modal-body">
-          <div class="col-12 mb-3">
-                <h6>Do you want to delete '<span id="deleteItem"></span>' ? </h6>   
-                <input type="hidden" name="did" id="did"/>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="submit" class="btn btn-info" name="deletem"  value="Delete">
-          <button type="button" class="btn btn-default" onclick="$('#deleteDataModal').modal('hide');">Close</button>
-        </div>
-        </form> 
-      </div>
-    </div>
-  </div>
-
-
   <script>
     var $table = $('#jCat');
 
@@ -335,6 +267,77 @@ require "../fillCombo.php"; ?>
     }
 
     </script> 
+<!-- Update Model -->
+<div class="modal fade" id="updateDataModal"  role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">          
+          <h5 class="modal-title">Job Category Update</h5>
+        </div>
+        <form method="post" action="" class="needs-validation" novalidate>
+        <div class="modal-body">
+          <div class="col-12 mb-3">
+                <label  class="form-label">ID</label>
+                <input type="text" class="form-control" id="uid" name="uid" value="" readonly>               
+          </div>
+          <div class="col-12 mb-3">
+                <label  class="form-label">Name</label>
+                <input type="text" class="form-control" id="uname" name="uname" value="" required>
+                <div class="invalid-feedback">
+                  Valid job category name is required.
+                </div>
+          </div>
+          <div class="col-12 mb-3">
+                    <label  class="form-label">Description</label>
+                    <input type="text" class="form-control" id="udescription" name="udescription" value="" >
+                    <div class="invalid-feedback">
+                      Valid job category description is required.
+                    </div>
+          </div>
+          <div class="col-12 mb-3">
+                    <label  class="form-label">Manager Name</label>
+                    <select class="form-select" id="umanager" name="umanager" >
+                    <option value="0">None</option>
+                      <?php getComboValueM(); ?>
+                    </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-info" name="updatem"  value="Update">
+          <button type="button" class="btn btn-default" onclick="$('#updateDataModal').modal('hide');clearOption();">Close</button>
+        </div>
+        </form> 
+      </div>
+    </div>
+  </div>  
+
+<!-- Delete Model -->
+<div class="modal fade" id="deleteDataModal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">          
+          <h5 class="modal-title">Job Category Delete</h5>
+        </div>
+        <form method="post" action="" class="needs-validation" novalidate>
+        <div class="modal-body">
+          <div class="col-12 mb-3">
+                <h6>Do you want to delete '<span id="deleteItem"></span>' ? </h6>   
+                <input type="hidden" name="did" id="did"/>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-info" name="deletem"  value="Delete">
+          <button type="button" class="btn btn-default" onclick="$('#deleteDataModal').modal('hide');">Close</button>
+        </div>
+        </form> 
+      </div>
+    </div>
+  </div>
+
+
+
+
+
    <script src="..\assets\js\form-validations.js"></script>
   </body>
 </html>

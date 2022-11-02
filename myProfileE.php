@@ -188,10 +188,10 @@ if(isset($_POST['save'])){
       $sql="";
       if(isset($_POST['activePass'])){
           $pass = md5($_POST['pw']);
-          $sql = "update employer set name='$name',phone_no=$cno, password='$pass',website='$web',logo='$pp' where email='$email'";      
+          $sql = "update employer set name='$name',phone_no='$cno', password='$pass',website='$web',logo='$pp' where email='$email'";      
       }
       else{
-        $sql = "update employer set name='$name',phone_no=$cno, website='$web',logo='$pp' where email='$email'"; 
+        $sql = "update employer set name='$name',phone_no='$cno', website='$web',logo='$pp' where email='$email'"; 
       }
       if(mysqli_query($con,$sql)){
           echo "<script>
