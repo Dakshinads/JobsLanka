@@ -1,5 +1,8 @@
 <?php require "../DBCon.php";
-require "../fillCombo.php"; ?>
+require "../fillCombo.php"; 
+session_start();
+if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -33,6 +36,12 @@ require "../fillCombo.php"; ?>
   <button class="navbar-toggler position-absolute d-md-none collapsed bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap mx-5">
+    <img src="../Uploads/ProfilePics/<?php echo $_SESSION['userInfo']['image']; ?>" alt="" width="35" height="35" class="rounded-circle me-2">
+    <span class=" mx-2 pt-2 lead">Hi <?php echo $_SESSION['userInfo']['name']; ?> </span>
+    </div>
+  </div>
 </header>
 
 <div class="container-fluid">
@@ -117,7 +126,7 @@ require "../fillCombo.php"; ?>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="ad-logout.php">
               <span data-feather="log-out" class="align-text-bottom"></span>
               Log out
             </a>
@@ -288,6 +297,9 @@ require "../fillCombo.php"; ?>
   </body>
 </html>
 <?php
+}else{
+  header("location: index.php");
+}
 
 if(isset($_POST['add'])){
   try{

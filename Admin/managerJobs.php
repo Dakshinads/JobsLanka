@@ -1,14 +1,13 @@
 <?php require "../DBCon.php";
-require "../fillCombo.php";
 session_start();
-if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
+if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){;
 ?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Dashboard</title>
+    <title>Jobs Lanka Manager Jobs</title>
     <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
     
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -50,71 +49,27 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
       <div class="position-sticky pt-3 sidebar-sticky">     
         <ul class="nav flex-column">
           <li class="nav-item ">
-            <a class="nav-link active" aria-current="page" href="adminDash.php">
+            <a class="nav-link " aria-current="page" href="managerDash.php">
               <span data-feather="home" class="align-text-bottom"></span>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="users.php">
+            <a class="nav-link active" href="">
               <span data-feather="users" class="align-text-bottom"></span>
-              Users
+              Jobs
             </a>
-          </li>
-
-          <li class="nav-item">
-          <div class="accordion"id="ac1" >
-            <div class="">
-                  <button class="accordion-button collapsed py-0 px-0 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                      aria-expanded="true" aria-controls="collapseOne">
-                      <a class="nav-link " href="#">
-                        <span data-feather="database" class="align-text-bottom"></span>
-                        Table
-                      </a>
-                  </button>
-              <div id="collapseOne" class="accordion-collapse collapse hide" data-bs-parent="#ac1">
-                  <div class=" py-0 px-3">
-                      <ul class="nav flex-column">
-                        <li class="nav-item">
-                          <a class="nav-link" href="jobCategory.php">
-                            <span data-feather="file" class="align-text-bottom"></span>
-                            Job Category
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " href="jobType.php">
-                            <span data-feather="file" class="align-text-bottom"></span>
-                            Job Type
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="location.php">
-                            <span data-feather="file" class="align-text-bottom"></span>
-                            Location
-                          </a>
-                        </li>                                                
-                      </ul>
-                  </div>
-              </div>
-            </div>
-          </div>
           </li>
 
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="shopping-bag" class="align-text-bottom"></span>
-              Jobs
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="mail" class="align-text-bottom"></span>
               Inquiry
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
-              <span data-feather="file" class="align-text-bottom"></span>
+              <span data-feather="mail" class="align-text-bottom"></span>
               Feedback
             </a>
           </li>
@@ -135,9 +90,21 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
       </div>
     </nav>
 
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-     
-    <h1 class="h2 mt-3">Dashboard</h1></br>        
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">     
+    <h1 class="h2 mt-3">Jobs</h1></br>
+       
+    <div class="row">
+        <div class="col-1 mb-3">
+        <label  class="lead">Job Status:</label></div>
+        <div class="col-6 mb-3">
+        <select class="form-select" id="jStatus" name="jStatus" required>
+            <option value="0">All Jobs</option>
+            <option value="1">Approval Pending Jobs</option>
+            <option value="2">Approved Jobs</option>
+            <option value="3">Not Approved Jobs</option>
+        </select>
+        </div>
+    </div>
     </main>
   </div>
   </div>

@@ -12,7 +12,7 @@ if(isset($_SESSION['userData'])){
   if($_SESSION['atype']=="Employer"){
     header("location: myProfileE.php");
   }else if($_SESSION['atype']=="JobSeeker"){
-    echo "need to develop(user profile)";
+    header("location: myProfileJ.php");
   }
 }else{
 ?>

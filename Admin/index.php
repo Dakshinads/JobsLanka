@@ -1,9 +1,24 @@
+<?php include "../DBCon.php";
+session_start();
+if(isset($_SESSION['userInfo'])){
+  /* job role id 
+      1=Admin
+      2=Manager */
+  if($_SESSION['userInfo']['job_role_id']==1){
+    header('location:myprofileA.php');
+  }else if($_SESSION['userInfo']['job_role_id']==2){
+    header('location:myprofileM.php');
+  }
+  
+}else{
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Login </title>
+    <title>Jobs Lanka Admin Login </title>
     <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
 
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -16,17 +31,20 @@
   <form action="" method="POST" class="needs-validation" novalidate>
     <img class="mb-4" src="../Images/logo_noBack.png" alt="" width="300" >
     <h1 class="h3 mb-3 fw-normal">LOGIN</h1>
-
+    <div class='alert alert-danger alert-dismissible collapse' role='alert' id="loginErrorAlert">
+        Email or Password incorrect
+      <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="Enter a email">
+      <input type="email" class="form-control" id="email" name="email" placeholder="Enter a email" required>
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <input type="password" class="form-control" id="pw" name="pw" placeholder="Password" required>
       <label for="floatingPassword">Password</label>
     </div>
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit" onclick="window.location.href='adminDash.php'">Login</button>
+    <input type="submit" class="w-100 btn btn-lg btn-primary" name="login" value="Login"/>
   </form>
 </main>
 <script src="..\assets\js\form-validations.js"></script>
@@ -34,3 +52,36 @@
 <script src="..\assets\js\jquery-3.6.1.min.js"></script>
 </body>
 </html>
+<?php } 
+
+if(isset($_POST['login'])){
+  try{
+
+    $email = $_POST['email'];
+    $pw = md5($_POST['pw']);
+
+    $sql="select * from staff where email='$email' and password='$pw' and isactive=1";
+    
+    if($result = mysqli_query($con,$sql)){
+      if(mysqli_num_rows($result)>0){
+        $row=mysqli_fetch_assoc($result);
+        $_SESSION['userInfo'] = $row;
+        if($_SESSION['userInfo']['job_role_id']==1){
+          header('location:adminDash.php');
+        }else if($_SESSION['userInfo']['job_role_id']==2){
+          header('location:managerDash.php');
+        }
+
+      }else{
+        echo "<script>
+        $('#loginErrorAlert').fadeIn(10);
+        </script>";
+      }
+    } 
+  }
+  catch(Exception $e){
+    echo $e->getMessage();
+  }
+}
+
+?>
