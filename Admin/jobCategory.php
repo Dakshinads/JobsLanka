@@ -86,13 +86,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
                             <span data-feather="file" class="align-text-bottom"></span>
                             Job Type
                           </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="location.php">
-                            <span data-feather="file" class="align-text-bottom"></span>
-                            Location
-                          </a>
-                        </li>                                                
+                        </li>                                               
                       </ul>
                   </div>
               </div>
@@ -107,7 +101,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="inquiry.php">
               <span data-feather="mail" class="align-text-bottom"></span>
               Inquiry
             </a>

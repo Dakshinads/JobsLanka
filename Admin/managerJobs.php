@@ -343,7 +343,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){
   }
   function declineJob_x(msg){
     changeTableData();
-    alert(msg);
+    //alert(msg);
     $('#declineStatusDoneAlert').show().delay(200).addClass("in").fadeOut(1500);
   }
 </script>

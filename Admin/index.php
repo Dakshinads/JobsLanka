@@ -29,7 +29,7 @@ if(isset($_SESSION['userInfo'])){
     
 <main class="form-signin w-100 m-auto">
   <form action="" method="POST" class="needs-validation" novalidate>
-    <img class="mb-4" src="../Images/logo_noBack.png" alt="" width="300" >
+    <a href="../index.php"><img class="mb-4" src="../Images/logo_noBack.png" alt="" width="300" ></a>
     <h1 class="h3 mb-3 fw-normal">LOGIN</h1>
     <div class='alert alert-danger alert-dismissible collapse' role='alert' id="loginErrorAlert">
         Email or Password incorrect

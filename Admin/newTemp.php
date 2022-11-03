@@ -75,12 +75,6 @@
                             <span data-feather="file" class="align-text-bottom"></span>
                             Job Type
                           </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">
-                            <span data-feather="file" class="align-text-bottom"></span>
-                            Location
-                          </a>
                         </li>                                                
                       </ul>
                   </div>

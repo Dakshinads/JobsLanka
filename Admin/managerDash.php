@@ -56,12 +56,14 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){
               Dashboard
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="managerJobs.php">
+
+          <?php if(strlen($_SESSION['userDepartmentName'])){ ?>
+          <li class="nav-item ">
+            <a class="nav-link" href="managerJobs.php" >
               <span data-feather="users" class="align-text-bottom"></span>
               Jobs
             </a>
-          </li>
+          </li> <?php } ?>
 
           <li class="nav-item">
             <a class="nav-link" href="#">

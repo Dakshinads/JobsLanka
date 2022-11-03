@@ -1,6 +1,10 @@
 <?php require "../DBCon.php";
-require "../fillCombo.php";
+require("../sajax.php"); 
 session_start();
+sajax_init();
+sajax_export("changeTableData");
+sajax_export("checkRespond");
+sajax_handle_client_request();
 if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 ?>
 <!doctype html>
@@ -8,7 +12,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Dashboard</title>
+    <title>Jobs Lanka Inquiry</title>
     <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
     
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -49,8 +53,8 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3 sidebar-sticky">     
         <ul class="nav flex-column">
-          <li class="nav-item ">
-            <a class="nav-link active" aria-current="page" href="adminDash.php">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="adminDash.php">
               <span data-feather="home" class="align-text-bottom"></span>
               Dashboard
             </a>
@@ -67,7 +71,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
             <div class="">
                   <button class="accordion-button collapsed py-0 px-0 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                       aria-expanded="true" aria-controls="collapseOne">
-                      <a class="nav-link " href="#">
+                      <a class="nav-link" href="#">
                         <span data-feather="database" class="align-text-bottom"></span>
                         Table
                       </a>
@@ -82,7 +86,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link " href="jobType.php">
+                          <a class="nav-link  " href="jobType.php">
                             <span data-feather="file" class="align-text-bottom"></span>
                             Job Type
                           </a>
@@ -101,7 +105,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="inquiry.php">
+            <a class="nav-link active" href="inquiry.php">
               <span data-feather="mail" class="align-text-bottom"></span>
               Inquiry
             </a>
@@ -116,7 +120,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="user" class="align-text-bottom"></span>
-              My Profile 
+              My Profile
             </a>
           </li>
           <li class="nav-item">
@@ -131,19 +135,157 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
      
-    <h1 class="h2 mt-3">Dashboard</h1></br>        
+    <h1 class="h2 mt-3">Inquiry</h1></br>
+    <div class="row">
+        <div class="col-1 ">
+        <label  class="h6">Inquiry Status:</label></div>
+        <div class="col-6 ">
+        <select class="form-select form-select-sm" id="iStatus" name="iStatus" onchange="changeTableData()">
+            <option value="0">All Inquiries</option>
+            <option value="1">Respond Pending Inquiries</option>
+            <option value="2">Responded Inquiries</option>
+        </select>
+        </div>
+    </div>
+    <div class="row">
+      <div class='alert alert-success alert-dismissible collapse' role='alert' id="respondAlert">
+        Responded for inquery..
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+      </div>
+        <div class="table-responsive" >
+            <table class="table table-striped table-sm "  data-height="500" id="inquiry" data-unique-id="id">
+              <thead >
+                <tr>
+                  <th scope="col" class="col-1 " data-field="id">ID</th>
+                  <th scope="col" class="col-2 ">Name</th>
+                  <th scope="col" class="col-2 ">Email</th>
+                  <th scope="col" class="col-1 ">Contact No</th>
+                  <th scope="col" class="col-3 ">Message</th>
+                  <th scope="col" class="col-1 ">Is Respond</th>
+                  <th scope="col" class="col-2 ">Responded Person Name</th>
+                </tr>
+              </thead>
+              <tbody id="inquiryTableBody">
+              </tbody>
+            </table>
+          </div>
+    </div>        
     </main>
   </div>
   </div>
 
+  <script>
+    var $table = $('#inquiry');
 
+    function buildTable($el) {
+    var classes = $('.toolbar input:checked').next().text()
 
+    $el.bootstrapTable('destroy').bootstrapTable({
+        showFullscreen: false,
+        search: false,
+        stickyHeader: true,        
+    })
+    };
 
+    $(function() {
+        buildTable($table)
+    });        
+
+    </script> 
    <script src="..\assets\js\form-validations.js"></script>
+
+<script>
+    <?php sajax_show_javascript(); ?>
+
+function changeTableData(){
+  inquiryStatus = document.getElementById('iStatus').value;
+  x_changeTableData(inquiryStatus,changeTableData_x);
+}
+
+function changeTableData_x(msg){
+  document.getElementById("inquiryTableBody").innerHTML = "";
+  document.getElementById('inquiryTableBody').innerHTML = msg;
+
+}
+window.onload = changeTableData();
+
+function checkRespond(id){
+  checkRespondID="resondCheck_"+id;
+  if(document.getElementById(checkRespondID).checked==true){
+    $data=id;
+    x_checkRespond($data,checkRespond_x);
+  }
+
+}
+
+function checkRespond_x(msg){
+  changeTableData();
+  $('#respondAlert').show().delay(200).addClass('in').fadeOut(2000)
+}
+</script>
   </body>
 </html>
 <?php
-}else{
-    header("location: index.php");
+}
+else{
+  header("location:ad-logout.php");
+}
+
+function changeTableData($data){
+  try{
+    $status=$data;
+    // status 0 = All Inquiries
+    // status 1 = Respond Pending Inquiries
+    // status 2 = Responded Inquiries
+
+    $sql="";
+    if($status==0){
+      $sql="select i.*,s.name as staffName from inquiry as i left join staff as s on i.staff_id=s.nic;";
+    }
+    else if($status==1){
+      $sql="select i.*,s.name as staffName from inquiry as i left join staff as s on i.staff_id=s.nic where i.staff_id IS NULL;";
+    }
+    else if($status==2){
+      $sql="select i.*,s.name as staffName from inquiry as i left join staff as s on i.staff_id=s.nic where i.staff_id IS NOT NULL;";
+    }
+    global $con;
+    $values="";
+    if($result=mysqli_query($con,$sql)){
+      while($row=mysqli_fetch_assoc($result)){
+        $values .= "<tr><td>".$row['id']."</td>";
+        $values .= "<td>".$row['name']."</td>";
+        $values .= "<td>".$row['email']."</td>";
+        $values .= "<td>".$row['phone_no']."</td>";
+        $values .= "<td>".$row['message']."</td>";
+        $state="";
+        if($row['staff_id']!= NULL){
+          $state= "checked disabled";
+        }
+        $values .= "<td >
+        <div class='form-check'>
+          <input class='form-check-input '  type='checkbox' id='resondCheck_".$row['id']."' onclick='checkRespond(".$row['id'].")' $state>
+        </div>
+        </td>";
+        $values .= "<td>".$row['staffName']."</td></tr>";
+
+      }
+    }
+    return $values;
+  }catch(Exception $e){
+    echo $e->getMessage();
+  }
+  
+}
+function checkRespond($data){
+  try{
+    global $con;
+    $userID=$_SESSION['userInfo']['nic'];
+    $sql = "update inquiry set staff_id='$userID' where id=$data ";
+    mysqli_query($con,$sql);
+
+  }
+  catch(Exception $e){
+    echo $e->getMessage();
+  }
 }
 ?>
