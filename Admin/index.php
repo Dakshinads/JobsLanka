@@ -68,7 +68,14 @@ if(isset($_POST['login'])){
         $_SESSION['userInfo'] = $row;
         if($_SESSION['userInfo']['job_role_id']==1){
           header('location:adminDash.php');
-        }else if($_SESSION['userInfo']['job_role_id']==2){
+        }
+        else if($_SESSION['userInfo']['job_role_id']==2){
+          $userNIC = $_SESSION['userInfo']['nic'];
+          $queryForGetDepartment = "select jc.name,jc.id from job_category as jc, staff as s where s.nic=jc.manager_id and s.nic='$userNIC'";
+          $result = mysqli_query($con,$queryForGetDepartment);
+          $row=mysqli_fetch_assoc($result);
+          $_SESSION['userDepartmentName'] = $row['name'];
+          $_SESSION['userDepartmentID'] = $row['id'];
           header('location:managerDash.php');
         }
 

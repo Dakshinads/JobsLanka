@@ -40,7 +40,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){
   <div class="navbar-nav">
     <div class="nav-item text-nowrap mx-5">
     <img src="../Uploads/ProfilePics/<?php echo $_SESSION['userInfo']['image']; ?>" alt="" width="35" height="35" class="rounded-circle me-2">
-    <span class=" mx-2 pt-2 lead">Hi <?php echo $_SESSION['userInfo']['name']; ?> </span>
+    <span class=" mx-2 pt-2 h6">Hi <?php echo $_SESSION['userInfo']['name']; ?> (<?php echo $_SESSION['userDepartmentName']; ?>)</span>
     </div>
   </div>
 </header>

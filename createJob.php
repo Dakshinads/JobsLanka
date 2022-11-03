@@ -143,7 +143,16 @@ $(document).ready(function(){
 
 tinymce.init({
     selector: '#description',
-    plugins: 'wordcount',
+    plugins: [
+    'advlist', 'autolink', 'lists',  'charmap', 'preview',
+    'searchreplace', 'visualblocks', 'code', 'fullscreen',
+     'table', 'help', 'wordcount'
+  ],
+  toolbar: 'undo redo | blocks | ' +
+  'bold italic backcolor | alignleft aligncenter ' +
+  'alignright alignjustify | bullist numlist outdent indent | ' +
+  'removeformat | help',
+  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
 });
 
 function isProvideDescriptionOrImage() {
