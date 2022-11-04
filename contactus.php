@@ -68,7 +68,7 @@ session_start();
       <label  class="form-label">Message</label>
       <textarea class="form-control" id="message" name="message" rows="4" minlength="5" min placeholder="Enter a Message.." required></textarea>
       <div class="invalid-feedback">
-        Valid contact no is required.
+        Valid message is required.
       </div>
     </div>
     </div>
@@ -119,7 +119,8 @@ if(isset($_POST['submit'])){
     $message =$_POST['message'];
     $sql="insert into inquiry(name,email,phone_no,message) values('$name','$email','$cno','$message')";
     if(mysqli_query($con,$sql)){
-        echo "<script>$('#sendDoneAlert').show().delay(200).addClass('in').fadeOut(1500)</script>";
+        echo "<script>$('#sendDoneAlert').show().delay(200).addClass('in').fadeOut(1500);
+              window.location.href='contactus.php'</script>";
     }
   }
   catch(Exception $e){

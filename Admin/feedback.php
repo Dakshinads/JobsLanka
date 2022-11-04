@@ -3,7 +3,6 @@ require("../sajax.php");
 session_start();
 sajax_init();
 sajax_export("changeTableData");
-sajax_export("checkRespond");
 sajax_handle_client_request();
 if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 ?>
@@ -12,7 +11,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jobs Lanka Inquiry</title>
+    <title>Jobs Lanka Feedback</title>
     <link rel="icon" type="image/x-icon" href="../images/logo-no-background.ico">
     
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -105,13 +104,13 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="inquiry.php">
+            <a class="nav-link " href="inquiry.php">
               <span data-feather="mail" class="align-text-bottom"></span>
               Inquiry
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="feedback.php">
+            <a class="nav-link active" href="feedback.php">
               <span data-feather="file" class="align-text-bottom"></span>
               Feedback
             </a>
@@ -135,15 +134,15 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
      
-    <h1 class="h2 mt-3">Inquiry</h1></br>
+    <h1 class="h2 mt-3">Feedback</h1></br>
     <div class="row my-3">
         <div class="col-2 ">
         <label  class="h6">Inquiry Status:</label></div>
         <div class="col-6 ">
         <select class="form-select form-select-sm" id="iStatus" name="iStatus" onchange="changeTableData()">
-            <option value="0">All Inquiries</option>
-            <option value="1">Respond Pending Inquiries</option>
-            <option value="2">Responded Inquiries</option>
+            <option value="0">All Feedback</option>
+            <option value="1">Employer's Feedback</option>
+            <option value="2">Job Seeker's Feedback</option>
         </select>
         </div>
     </div>
@@ -153,19 +152,15 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
       </div>
         <div class="table-responsive" >
-            <table class="table table-striped table-sm "  data-height="500" id="inquiry" data-unique-id="id">
+            <table class="table table-striped table-sm "  data-height="500" id="feedback" data-unique-id="id">
               <thead >
                 <tr>
-                  <th scope="col" class="col-1 " data-field="id">ID</th>
-                  <th scope="col" class="col-2 ">Name</th>
-                  <th scope="col" class="col-2 ">Email</th>
-                  <th scope="col" class="col-1 ">Contact No</th>
-                  <th scope="col" class="col-3 ">Message</th>
-                  <th scope="col" class="col-1 ">Is Respond</th>
-                  <th scope="col" class="col-2 ">Responded Person Name</th>
+                  <th scope="col" class="col-3 " data-field="id">Name</th>
+                  <th scope="col" class="col-2 ">Account Type</th>
+                  <th scope="col" class="col-7 ">Feedback</th>
                 </tr>
               </thead>
-              <tbody id="inquiryTableBody">
+              <tbody id="feedbackTableBody">
               </tbody>
             </table>
           </div>
@@ -175,7 +170,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
   </div>
 
   <script>
-    var $table = $('#inquiry');
+    var $table = $('#feedback');
 
     function buildTable($el) {
     var classes = $('.toolbar input:checked').next().text()
@@ -203,25 +198,12 @@ function changeTableData(){
 }
 
 function changeTableData_x(msg){
-  document.getElementById("inquiryTableBody").innerHTML = "";
-  document.getElementById('inquiryTableBody').innerHTML = msg;
+  document.getElementById("feedbackTableBody").innerHTML = "";
+  document.getElementById('feedbackTableBody').innerHTML = msg;
 
 }
 window.onload = changeTableData();
 
-function checkRespond(id){
-  checkRespondID="resondCheck_"+id;
-  if(document.getElementById(checkRespondID).checked==true){
-    $data=id;
-    x_checkRespond($data,checkRespond_x);
-  }
-
-}
-
-function checkRespond_x(msg){
-  changeTableData();
-  $('#respondAlert').show().delay(200).addClass('in').fadeOut(2000)
-}
 </script>
   </body>
 </html>
@@ -234,40 +216,48 @@ else{
 function changeTableData($data){
   try{
     $status=$data;
-    // status 0 = All Inquiries
-    // status 1 = Respond Pending Inquiries
-    // status 2 = Responded Inquiries
+    // status 0 = All Feedback
+    // status 1 = Employer's Feedback
+    // status 2 = Job Seeker's Feedback
 
     $sql="";
     if($status==0){
-      $sql="select i.*,s.name as staffName from inquiry as i left join staff as s on i.staff_id=s.nic;";
+      $sql="select f.description,e.name as employername,j.name as jobseekername from feedback as f left join employer as e on f.employer_id = e.id left join job_seeker as j on  f.job_seeker_id = j.nic";
     }
     else if($status==1){
-      $sql="select i.*,s.name as staffName from inquiry as i left join staff as s on i.staff_id=s.nic where i.staff_id IS NULL;";
+      $sql="select f.description,e.name as employername from feedback as f inner join employer as e on f.employer_id = e.id;";
     }
     else if($status==2){
-      $sql="select i.*,s.name as staffName from inquiry as i left join staff as s on i.staff_id=s.nic where i.staff_id IS NOT NULL;";
+      $sql="select f.description,j.name as jobseekername from feedback as f inner join job_seeker as j on f.job_seeker_id = j.nic;";
     }
     global $con;
     $values="";
     if($result=mysqli_query($con,$sql)){
       while($row=mysqli_fetch_assoc($result)){
-        $values .= "<tr><td>".$row['id']."</td>";
-        $values .= "<td>".$row['name']."</td>";
-        $values .= "<td>".$row['email']."</td>";
-        $values .= "<td>".$row['phone_no']."</td>";
-        $values .= "<td>".$row['message']."</td>";
-        $state="";
-        if($row['staff_id']!= NULL){
-          $state= "checked disabled";
+        $name="";
+        $accountType="";
+        if(array_key_exists('employername',$row)){
+            if(array_key_exists('jobseekername',$row)){
+                if($row['employername']!=null){
+                    $name = $row['employername'];
+                    $accountType="Employer";
+                }else{
+                    $name = $row['jobseekername'];
+                    $accountType = "JobSeeker";
+                }
+            }else{  
+                $name = $row['employername'];
+                $accountType="Employer";
+            }
+        }else{
+            $name = $row['jobseekername'];
+            $accountType = "JobSeeker";
         }
-        $values .= "<td >
-        <div class='form-check'>
-          <input class='form-check-input '  type='checkbox' id='resondCheck_".$row['id']."' onclick='checkRespond(".$row['id'].")' $state>
-        </div>
-        </td>";
-        $values .= "<td>".$row['staffName']."</td></tr>";
 
+
+        $values .= "<tr><td>".$name."</td>";
+        $values .= "<td>".$accountType."</td>";
+        $values .= "<td>".$row['description']."</td></tr>";
       }
     }
     return $values;
@@ -275,17 +265,5 @@ function changeTableData($data){
     echo $e->getMessage();
   }
   
-}
-function checkRespond($data){
-  try{
-    global $con;
-    $userID=$_SESSION['userInfo']['nic'];
-    $sql = "update inquiry set staff_id='$userID' where id=$data ";
-    mysqli_query($con,$sql);
-
-  }
-  catch(Exception $e){
-    echo $e->getMessage();
-  }
 }
 ?>

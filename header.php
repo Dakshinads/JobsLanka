@@ -42,7 +42,7 @@ if($_SESSION['atype']=="JobSeeker"){
             <li><a class="dropdown-item" href="myJobsE.php">My Jobs</a></li>
             <li><a class="dropdown-item" href="#">Interview</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Give a Feedback</a></li>
+            <li><a class="dropdown-item" href="feedback.php">Give a Feedback</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><button class="dropdown-item" type="button" onclick="window.location.href='logout.php'">Log Out</button></li>
           </ul>
@@ -60,7 +60,7 @@ if($_SESSION['atype']=="JobSeeker"){
             <li><a class="dropdown-item" href="#">My Jobs</a></li>
             <li><a class="dropdown-item" href="#">Saved Jobs</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Give a Feedback</a></li>
+            <li><a class="dropdown-item" href="feedback.php">Give a Feedback</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><button class="dropdown-item" type="button" onclick="window.location.href='logout.php'">Log Out</button></li>
           </ul>

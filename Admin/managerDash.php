@@ -66,20 +66,20 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){
           </li> <?php } ?>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="inquiryM.php">
               <span data-feather="shopping-bag" class="align-text-bottom"></span>
               Inquiry
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="feedbackM.php">
               <span data-feather="mail" class="align-text-bottom"></span>
               Feedback
             </a>
           </li>
           <hr/>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="myProfileM.php">
               <span data-feather="user" class="align-text-bottom"></span>
               My Profile 
             </a>

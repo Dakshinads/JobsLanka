@@ -95,7 +95,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="jobs.php">
               <span data-feather="shopping-bag" class="align-text-bottom"></span>
               Jobs
             </a>
@@ -107,14 +107,14 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="feedback.php">
               <span data-feather="file" class="align-text-bottom"></span>
               Feedback
             </a>
           </li>
           <hr/>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="myProfileA.php">
               <span data-feather="user" class="align-text-bottom"></span>
               My Profile
             </a>
