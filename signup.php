@@ -237,7 +237,7 @@ if(isset($_SESSION['userData'])){
 <!-- Adding header -->
 <?php include "header.php" ?>
 
-<main class="container">
+<main class="container shadow p-3 my-3 bg-white rounded">
     <div class="row">
         
         <div class="col-md-8 col-lg-12 ddd">
@@ -335,7 +335,7 @@ if(isset($_SESSION['userData'])){
             </div>
             <div class="row ">
               <div class="col-6 mb-5">
-                  <input class=" btn btn-primary btn-lg" type="submit" name="oregister" value="Register">
+                  <input class=" btn btn-primary btn-lg" type="submit" name="oregister" value="Sign Up">
               </div>
               </div>
             </div>
@@ -453,7 +453,7 @@ if(isset($_SESSION['userData'])){
 
             <div class="row ">
               <div class="col-6 mb-5">
-                  <input class=" btn btn-primary btn-lg" name="jregister"  type="submit" value="Register">
+                  <input class=" btn btn-primary btn-lg" name="jregister"  type="submit" value="Sign Up">
               </div>
               </div>
             </div>

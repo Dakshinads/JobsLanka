@@ -31,7 +31,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && $_COOKIE['u
 <!-- Adding header -->
 <?php include "header.php" ?>
 
-<main class="container" >
+<main class="container shadow p-3 my-3 bg-white rounded" >
 <div class="row">
   <div class="col-md-8 col-lg-12 ">
   <h4 class="mt-3">Update Job</h4>

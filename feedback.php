@@ -34,7 +34,7 @@ if(isset($_SESSION['userData'])){
 <!-- Adding header -->
 <?php include "header.php" ?>
 
-<main class="container" >
+<main class="container shadow p-3 my-3 bg-white rounded" >
 <div class="row">
   <div class="col-md-8 col-lg-12 ">
   <h4 class="mt-3">Your Feedback</h4>
@@ -61,7 +61,7 @@ if(isset($_SESSION['userData'])){
     </div>
 
     <div class="row ">
-      <div class="col-6 mb-5">
+      <div class="col-6 mb-2">
         <?php if($feedback !=null){
             echo '<input class=" btn btn-secondary btn-md" type="submit" name="update" value="Update Feedback">';
         }else{

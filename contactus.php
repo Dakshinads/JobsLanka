@@ -18,7 +18,7 @@ session_start();
 <!-- Adding header -->
 <?php include "header.php" ?>
 
-<main class="container">
+<main class="container shadow p-3 my-3 bg-white rounded">
     <h4 class="mt-3">Contact Us</h4>
     <hr class="my-4">
     <p class="">Have questions or would like to contact us? we'd love to hear from you. </p></br>

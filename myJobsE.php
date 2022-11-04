@@ -38,7 +38,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
 <!-- Adding header -->
 <?php include "header.php" ?>
 
-<main class="container" >
+<main class="container shadow p-3 my-3 bg-white rounded" >
 <div class="row">
     <div class='alert alert-success alert-dismissible collapse' role='alert' id="updateDoneAlert">
         Job Details Updated.. Now Your job is send to approval. 
