@@ -26,11 +26,11 @@ session_start();
       </div>
     </div>
   </section>
-
-
-  
 </main>
 
+<main class="container">
+
+</main>
 <div class="b-example-divider"></div>
 
 <!-- Adding footer -->

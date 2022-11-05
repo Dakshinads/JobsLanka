@@ -240,7 +240,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
         </div>
         <div class="row">
           <div class="col-sm-12 mb-3">
-            <img src='' id="jobPostImage">
+            <img src='' id="jobPostImage" width="90%">
           </div>
         </div>
 
