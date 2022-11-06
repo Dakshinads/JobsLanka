@@ -126,7 +126,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
 </div>
     <div class="row"><hr/>
         <div class="col-sm-3">
-            <input class=" btn btn-primary btn-md my-2" type="button" onclick="window.location.href='createJob.php'" value="Show My Interviews">   
+            <input class=" btn btn-primary btn-md my-2" type="button" onclick="window.location.href='myInterviewE.php'" value="Show My Interviews">   
         </div> 
     </div>
 </main>
