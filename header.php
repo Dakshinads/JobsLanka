@@ -57,8 +57,8 @@ if($_SESSION['atype']=="JobSeeker"){
           </a>
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="myProfileJ.php">My Profile</a></li>
-            <li><a class="dropdown-item" href="#">My Jobs</a></li>
-            <li><a class="dropdown-item" href="#">Saved Jobs</a></li>
+            <li><a class="dropdown-item" href="myJobs.php">My Jobs</a></li>
+            <li><a class="dropdown-item" href="savedJobs.php">Saved Jobs</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="feedback.php">Give a Feedback</a></li>
             <li><hr class="dropdown-divider"></li>

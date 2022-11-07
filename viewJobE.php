@@ -117,7 +117,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && isset($_COO
 <div class="row">
   <div class="col-sm-12 mb-3">
     <?php if($row['status']==1 || $row['status']==3) { ?>
-    <button type="button" class="btn btn-primary btn-lg my-2" onclick=""  >View Applicants</button><?php } ?>
+    <button type="button" class="btn btn-primary btn-lg my-2" onclick="window.location.href='viewApplicants.php'"  >View Applicants</button><?php } ?>
   </div>
 </div>
 </main>
@@ -134,6 +134,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && isset($_COO
     $(function () {
         $('[data-bs-toggle="popover"]').popover()
     })
+
 </script>
 </body>
 </html>

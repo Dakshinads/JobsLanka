@@ -84,7 +84,7 @@ sajax_handle_client_request();
 
       </div>
       <div class="table-responsive" >
-        <table class="table table-md "   data-height="500" id="jobs" data-unique-id="id">
+        <table class="table table-sm "   data-height="600" id="jobs" data-unique-id="id">
           <thead style="background-color: #8ad2f6;">
             <tr>
               <th scope="col" class="col-7 text-center " data-field="id"><h6>Job Title</h6></th>
@@ -199,7 +199,7 @@ function changeTableData($data){
     if($result=mysqli_query($con,$sql)){
       while($row=mysqli_fetch_assoc($result)){
 
-        $values .= "<tr style=' ' ><td><h6 class='mt-2 '>".$row['title']."</h6> <small class='text-muted'>".$row['companyname']."  </small>  <span class='badge bg-success mb-2'>".$row['typename']."</span></td>";
+        $values .= "<tr ><td><h6 class='mt-2 '>".$row['title']."</h6> <small class='text-muted'>".$row['companyname']."  </small>  <span class='badge bg-success mb-2'>".$row['typename']."</span></td>";
         $values .= "<td class='text-center '>".$row['opening_date']."</td>";
         $values .= "<td class='text-center '>".$row['closing_date']."</td>";
         $values .= "<td class='text-center '><button class=' btn btn-info btn-sm text-dark' onclick='window.location.href=\"viewJob.php?id=".$row['job_ref_no']."\" ' >View Details</button></td></tr>";
