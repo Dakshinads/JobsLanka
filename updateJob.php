@@ -114,7 +114,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer" && $_COOKIE['u
         <label class="form-label">Current Job Post Image</label><br/>
         <?php if(strlen($row['image'])>0){
             $image =$row['image'];
-            echo "<img src='Uploads/JobPostImages/$image' >";
+            echo "<img src='Uploads/JobPostImages/$image' id='jobPostImageView' >";
          } ?>
          
         </div>        
@@ -176,7 +176,7 @@ tinymce.init({
 });
 
 function isProvideDescriptionOrImage() {
-    var filepath =document.getElementById('jobPostImage').value;
+    var filepath =document.getElementById('jobPostImageView').value;
     const wordcount = tinymce.activeEditor.plugins.wordcount;
     var description = wordcount.body.getCharacterCount();
     if(filepath.length>0 || description>0){

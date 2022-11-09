@@ -96,6 +96,8 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                 if($status==0){ ?>
                     <button type="button" class="btn btn-success btn-sm "  onclick="openAcceptModal('<?php echo $row['nic']; ?>',<?php echo $row['appliedjobid'] ?>)" >Accept</button>
                     <button type="button" class="btn btn-danger btn-sm"  onclick="reject(<?php echo $row['appliedjobid'] ?>)" >Reject</button>
+                <?php } else if($status==1){ ?>
+                    <button type="button" class="btn btn-warning btn-sm "  onclick="openUpdateModal('<?php echo $row['nic']; ?>',<?php echo $row['appliedjobid'] ?>)" >Update Interview Details</button>
                 <?php } ?>
                 </td>
             </tr>
