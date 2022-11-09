@@ -91,7 +91,6 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                         }
                     ?></td>
 
-
                 <td class="text-center"><?php 
                 if($status==0){ ?>
                     <button type="button" class="btn btn-success btn-sm "  onclick="openAcceptModal('<?php echo $row['nic']; ?>',<?php echo $row['appliedjobid'] ?>)" >Accept</button>
