@@ -67,8 +67,11 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
             </thead>
             <tbody>
             <?php 
-            $sql= "select js.nic,js.name,js.gender,js.email,js.phone_no,aj.status,js.cv, j.title, aj.id as appliedjobid from job_seeker as js, applied_job as aj, job as j 
-            where aj.job_seeker_id=js.nic and aj.job_ref_no = j.job_ref_no and j.job_ref_no=$jobRefNo;";
+            
+            $sql= "select js.nic,js.name,js.gender,js.email,js.phone_no,aj.status,js.cv, j.title, aj.id as appliedjobid, it.time,ta.date from 
+            job_seeker as js, job as j , applied_job as aj left outer JOIN time_allocate as ta on aj.id=ta.applied_job_id
+             LEFT outer join interview_timeslot it on it.id = ta.interview_timeslot_id where aj.job_seeker_id=js.nic and 
+             aj.job_ref_no = j.job_ref_no and j.job_ref_no=$jobRefNo;";
             $result = mysqli_query($con,$sql);
             while($row=mysqli_fetch_assoc($result)){
                 ?>
@@ -86,6 +89,8 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                             echo "<span class='badge bg-primary'>Pending</span>";
                         }else if($status==1){
                             echo "<span class='badge bg-success'>Accepted</span>";
+                            echo "<button type='button' onclick='viewInterviewDetails()' class='btn btn-link' data-bs-container='body' title='Interview Date and timeslot'
+                             data-bs-toggle='popover' data-bs-placement='top' data-bs-content='Date:".$row['date']."\n Time: ".$row['time']."'>Interview Details</button>";
                         }else if($status ==2){
                             echo "<span class='badge bg-danger'>Rejected</span>";
                         }
@@ -96,7 +101,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                     <button type="button" class="btn btn-success btn-sm "  onclick="openAcceptModal('<?php echo $row['nic']; ?>',<?php echo $row['appliedjobid'] ?>)" >Accept</button>
                     <button type="button" class="btn btn-danger btn-sm"  onclick="reject(<?php echo $row['appliedjobid'] ?>)" >Reject</button>
                 <?php } else if($status==1){ ?>
-                    <button type="button" class="btn btn-warning btn-sm "  onclick="openUpdateModal('<?php echo $row['nic']; ?>',<?php echo $row['appliedjobid'] ?>)" >Update Interview Details</button>
+                    <button type="button" class="btn btn-warning btn-sm "  onclick="openUpdateModal('<?php echo $row['nic']; ?>',<?php echo $row['appliedjobid'] ?> ,'<?php echo $row['time'] ?>',',<?php echo $row['date'] ?>')" >Update Interview Details</button>
                 <?php } ?>
                 </td>
             </tr>
@@ -118,11 +123,12 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">          
-          <h5 class="modal-title">Accept Job</h5>
+          <h5 class="modal-title" id="txtTitle"></h5>
         </div>
         <form method="post" action="" class="needs-validation" novalidate>
         <div class="modal-body row">
             <input type="hidden" id="hdnAppliedID" name="hdnAppliedID">
+            <input type="hidden" id="hdntype" name="hdntype">
             <div class="col-sm-12 mb-6">
                 <label  class="form-label">Interview Date</label>
                 <div class="input-group " >
@@ -132,9 +138,10 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                     Please provide a valid Interview Date.
                 </div>
             </div>
+            <div id="alertInterViewTimeSlotEmpty"></div>
              <div class="col-sm-12 mb-6">
                 <label  class="form-label">Interview Time</label>
-                <select class="form-select" id="interviewTime" name="interviewTime"required>
+                <select class="form-select" id="interviewTime" name="interviewTime" onclick="checkTimeSlots()" required>
                 </select>
                 <div class="invalid-feedback">
                 Please provide a valid Location.
@@ -142,7 +149,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
             </div> 
         </div>
         <div class="modal-footer mt-2">
-          <input type="submit" class="btn btn-success" name="accept" value="Accept"/>
+          <input type="submit" class="btn btn-success" name="accept" id="accept" value="Accept"/>
           <button type="button" class="btn btn-default" onclick="$('#acceptJobModal').modal('hide');">Close</button>
         </div>
         </form> 
@@ -176,7 +183,7 @@ $(document).ready(function(){
         format: "yyyy-mm-dd",
         startDate: new Date(),
         endDate: monthAfterDate
-    }).datepicker("setDate", "0");    
+    }).datepicker("setDate", "0");
 });
 
 <?php sajax_show_javascript(); ?>
@@ -191,7 +198,27 @@ function reject_x(msg){
 
 function openAcceptModal(jobSeekerID,appliedJobID){
     document.getElementById('hdnAppliedID').value=appliedJobID;
+    document.getElementById('accept').value="Accept";
+    document.getElementById('txtTitle').innerHTML="Accept";
+
+    document.getElementById('hdntype').value="save";
+
+    $('#accept').addClass("btn-success");
+    $('#accept').removeClass("btn-warning");
     $('#acceptJobModal').modal('show');
+}
+
+function openUpdateModal(jobSeekerID,appliedJobID,time,date){
+    document.getElementById('hdnAppliedID').value=appliedJobID;
+    document.getElementById('accept').value="Update";
+    document.getElementById('txtTitle').innerHTML="Update";
+    
+    document.getElementById('hdntype').value="update";
+    
+    $('#accept').addClass("btn-warning");
+    $('#accept').removeClass("btn-success");
+    $('#acceptJobModal').modal('show');
+    
 }
 
 function getComboInterviewTimeSlot(){
@@ -204,8 +231,36 @@ function getComboInterviewTimeSlot_x(msg){
 
     $('#interviewTime option').remove();
     $('#interviewTime').append(msg);
+    
 }
 window.onload = getComboInterviewTimeSlot();
+
+function viewInterviewDetails(){
+      $('[data-bs-toggle="popover"]').popover();
+}
+
+function checkTimeSlots(){
+    var listcount=document.getElementById('interviewTime');
+    let drop = listcount.options.length;
+    if(drop==0){
+
+        $("#alertInterViewTimeSlotEmpty").animate({
+        height: '+=72px'
+       }, 300);
+        $('<div class="alert alert-warning">Before the accept,You should add timeslots.. </div>').hide().appendTo('#alertInterViewTimeSlotEmpty').fadeIn(1000);
+       
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#alertInterViewTimeSlotEmpty").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+    }
+}
 </script>
 </body>
 </html>
@@ -238,11 +293,19 @@ if(isset($_POST['accept'])){
         $interviewDate=$_POST['interviewDate'];
         $interviewTime=$_POST['interviewTime'];
         $appliedJobId= $_POST['hdnAppliedID'];
-        $sql= "insert into time_allocate(applied_job_id,employer_id,interview_timeslot_id,date) values ($appliedJobId,$UserID,$interviewTime,'$interviewDate')";
-        mysqli_query($con,$sql);
+        $type=$_POST['hdntype'];
+        if($type=="update"){
+            $sqlupdate="update time_allocate set interview_timeslot_id=$interviewTime,date='$interviewDate' where applied_job_id=$appliedJobId ";
+            mysqli_query($con,$sqlupdate);
+        }else if ($type=="save"){
+            $sql= "insert into time_allocate(applied_job_id,employer_id,interview_timeslot_id,date) values ($appliedJobId,$UserID,$interviewTime,'$interviewDate')";
+            mysqli_query($con,$sql);
+            $sql="update applied_job set status=1 where id=$appliedJobId";
+            mysqli_query($con,$sql);
+        }
+        
 
-        $sql="update applied_job set status=1 where id=$appliedJobId";
-        mysqli_query($con,$sql);
+       
         echo "<script>window.location.href='viewApplicants.php'</script>";
 
     }

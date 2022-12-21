@@ -138,7 +138,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
       </div>
       <div class='alert alert-success alert-dismissible collapse' role='alert' id="deleteDoneAlert">
-        Job category deleted..
+      <p id="deleteAlertText"></p>
         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
       </div>
         <div class="table-responsive" >
@@ -154,21 +154,33 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
               </thead>
               <tbody>
                 <?php 
-                $sql= "select j.*,s.name as managerName from job_category as j left join staff as s on j.manager_id =s.nic where j.isactive=1 ";
+                $sql= "select j.*,s.name as managerName from job_category as j left join staff as s on j.manager_id =s.nic order by j.isactive desc ";
                 $result = mysqli_query($con,$sql);
                 while($row=mysqli_fetch_assoc($result)){
+                  $clsTextMuted="";
+                  $btnactivationName="";
+                  $btnColor="";
+                  if($row['isactive']==0){
+                    $clsTextMuted = "class='text-muted'";
+                    $btnactivationName="Activate";
+                    $btnColor="btn-success";
+                  }else{
+                    $clsTextMuted="";
+                    $btnactivationName="Deactivate";
+                    $btnColor="btn-danger";
+                  }
                     ?>
                 
                 <tr>
-                  <td><?php echo $row['id']; ?></td>
-                  <td><?php echo $row['name']; ?></td>
-                  <td><?php echo $row['description']; ?></td>
+                  <td <?php echo $clsTextMuted; ?> ><?php echo $row['id']; ?></td>
+                  <td <?php echo $clsTextMuted; ?> ><?php echo $row['name']; ?></td>
+                  <td <?php echo $clsTextMuted; ?> ><?php echo $row['description']; ?></td>
                   <td><?php 
                   if($row['managerName']!="")
                     echo $row['managerName']."-".$row['manager_id']; ?></td>
                   <td class="text-center">
                   <button type="button" class="btn btn-info btn-sm"  onclick="openUpdateModel(<?php echo $row['id']; ?>)" ><i class="bi bi-arrow-repeat"></i>Update</button>
-                  <button type="button" class="btn btn-danger btn-sm" onclick="openDeleteModel(<?php echo $row['id']; ?>)"  ><i class="bi bi-trash"></i>Delete</button>
+                  <button type="button" class="btn <?php echo $btnColor; ?> btn-sm" onclick="openDeleteModel(<?php echo $row['id']; ?> , '<?php echo $row['isactive']; ?> ')" ><?php echo $btnactivationName; ?></button>
                   </td>
                 </tr>
                 <?php }
@@ -261,12 +273,19 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
         
     }
 
-    function openDeleteModel(id){
+    function openDeleteModel(id, activeStatus){
       var $table = $('#jCat')
       var data=JSON.parse(JSON.stringify($table.bootstrapTable('getRowByUniqueId', id)));
       $("#deleteDataModal").modal("show");
-        document.getElementById('did').value =id;
-        document.getElementById('deleteItem').innerHTML =data[1];
+      if(activeStatus==0){
+        document.getElementById('deleteItem').innerHTML ="activate '"+data[1];
+        document.getElementById('deletem').value = "Activate";
+      }else{
+        document.getElementById('deleteItem').innerHTML ="deactivate '"+data[1];
+        document.getElementById('deletem').value = "Deactivate";
+      }
+      document.getElementById('did').value =id;
+      document.getElementById('dstatus').value =activeStatus;
     }
 
     </script> 
@@ -319,17 +338,18 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">          
-          <h5 class="modal-title">Job Category Delete</h5>
+          <h5 class="modal-title">Job Category Activation</h5>
         </div>
         <form method="post" action="" class="needs-validation" novalidate>
         <div class="modal-body">
           <div class="col-12 mb-3">
-                <h6>Do you want to delete '<span id="deleteItem"></span>' ? </h6>   
+                <h6>Do you want to <span id="deleteItem"></span>' ? </h6>   
                 <input type="hidden" name="did" id="did"/>
+                <input type="hidden" name="dstatus" id="dstatus"/>
           </div>
         </div>
         <div class="modal-footer">
-          <input type="submit" class="btn btn-info" name="deletem"  value="Delete">
+          <input type="submit" class="btn btn-info" name="deletem" id="deletem"  value="Delete">
           <button type="button" class="btn btn-default" onclick="$('#deleteDataModal').modal('hide');">Close</button>
         </div>
         </form> 
@@ -412,10 +432,17 @@ if(isset($_POST['updatem'])){
 if(isset($_POST['deletem'])){
   try{
     $id=$_POST['did'];
-    $sql="update job_category set isactive=0, manager_id=NULL where id=$id ";
+    $activeStatus=$_POST['dstatus'];
+    if($activeStatus==0){
+      $sql="update job_category set isactive=1, manager_id=NULL where id=$id ";
+    }else{
+      $sql="update job_category set isactive=0, manager_id=NULL where id=$id ";
+    }
+    
     if(mysqli_query($con,$sql)){
       echo "<script>
       $('#deleteDoneAlert').fadeIn(10);
+      document.getElementById('deleteAlertText').innerHTML='User activated';
       </script>";
       echo "<script>window.location.href='jobCategory.php';</script>";
       exit;

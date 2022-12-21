@@ -8,7 +8,11 @@ if($_SESSION['atype']=="JobSeeker"){
 }
 
 ?>
-
+<style>
+  .headingLink:hover {
+    background-color: #11bbee;
+  }
+</style>
 <header class="p-3 mb-1 border-bottom mybgColor shadow " >
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -17,8 +21,8 @@ if($_SESSION['atype']=="JobSeeker"){
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="index.php" class="nav-link px-2 link-dark">Home</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Employers</a></li>
+          <li><a href="index.php" class="nav-link px-2 link-dark headingLink">Home</a></li>
+          <li><a href="Employers.php" class="nav-link px-2 link-dark headingLink">Employers</a></li>
           <!--<li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>-->
         </ul>
@@ -40,7 +44,7 @@ if($_SESSION['atype']=="JobSeeker"){
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="myProfileE.php">My Profile</a></li>
             <li><a class="dropdown-item" href="myJobsE.php">My Jobs</a></li>
-            <li><a class="dropdown-item" href="#">Interview</a></li>
+            <li><a class="dropdown-item" href="myInterviewE.php">My Interviews</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="feedback.php">Give a Feedback</a></li>
             <li><hr class="dropdown-divider"></li>

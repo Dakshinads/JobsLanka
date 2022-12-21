@@ -145,7 +145,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
         <div class="row ">
             <div class="col-sm-12 mb-3">
               <label  class="form-label">NIC</label>
-              <input type="text" class="form-control" id="nic" name="nic" placeholder="NIC"  minlength="10" maxlength="12" value="" required>
+              <input type="text" class="form-control" id="nic" name="nic" placeholder="NIC"  minlength="10" maxlength="12" pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})$" value="" required>
               <div class="invalid-feedback">
                 Valid NIC is required.
               </div>

@@ -348,7 +348,7 @@ if(isset($_SESSION['userData'])){
             <div class="row ">
             <div class="col-sm-12 mb-3">
               <label  class="form-label">NIC</label>
-              <input type="text" class="form-control" id="jnic" name="jnic" placeholder="NIC" maxlength="12" minlength="10" value="" required>
+              <input type="text" class="form-control" id="jnic" name="jnic" placeholder="NIC" maxlength="12" minlength="10" value="" pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})$" required>
               <div class="invalid-feedback">
                 Valid NIC is required.
               </div>

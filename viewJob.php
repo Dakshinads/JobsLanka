@@ -197,8 +197,10 @@ function applyJob(){
     $('#applyJobModal').modal('hide');  
     x_applyJob(jobRefNo+"_"+jobSeekerID,applyJob_x);
 }
+
 function applyJob_x(msg){
-    $("#alertApplyDone").animate({
+    if(msg){
+        $("#alertApplyDone").animate({
         height: '+=72px'
        }, 300);
        $('<div class="alert alert-success">You have successfully sent your details along with your CV </div>').hide().appendTo('#alertApplyDone').fadeIn(1000);
@@ -212,6 +214,23 @@ function applyJob_x(msg){
        $("#alertApplyDone").delay(4000).animate({
         height: '-=72px'
        }, 300);
+    }else{
+        $("#alertApplyDone").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-warning">You have already applied this job</div>').hide().appendTo('#alertApplyDone').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#alertApplyDone").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+    }
+    
 }
 
 function saveJob(){
@@ -221,7 +240,8 @@ function saveJob(){
 }
 
 function saveJob_x(msg){
-    $("#alertApplyDone").animate({
+    if(msg){
+        $("#alertApplyDone").animate({
         height: '+=72px'
        }, 300);
        $('<div class="alert alert-success">You have successfully saved this job </div>').hide().appendTo('#alertApplyDone').fadeIn(1000);
@@ -235,6 +255,23 @@ function saveJob_x(msg){
        $("#alertApplyDone").delay(4000).animate({
         height: '-=72px'
        }, 300);
+    }else{
+        $("#alertApplyDone").animate({
+        height: '+=72px'
+       }, 300);
+       $('<div class="alert alert-warning">You have already saved this job </div>').hide().appendTo('#alertApplyDone').fadeIn(1000);
+  
+       $(".alert").delay(3000).fadeOut(
+        "normal",
+           function(){
+            $(this).remove();
+        });
+  
+       $("#alertApplyDone").delay(4000).animate({
+        height: '-=72px'
+       }, 300);
+    }
+    
 }
 </script>
 
@@ -248,9 +285,15 @@ function applyJob($data){
         // status 2 = Reject
         global $con;
         $dataAr = explode("_",$data);
-        $sql= "insert into applied_job(job_seeker_id,job_ref_no,status) values('$dataAr[1]',$dataAr[0],0)";
-        mysqli_query($con,$sql);
-        return true;
+        $sqlCheckAlreadyApplied="Select * from applied_job where job_seeker_id='$dataAr[1]' and job_ref_no=$dataAr[0]";
+        $rs=mysqli_query($con,$sqlCheckAlreadyApplied);
+        if(mysqli_num_rows($rs)>0){
+            return false;
+        }else{
+            $sql= "insert into applied_job(job_seeker_id,job_ref_no,status) values('$dataAr[1]',$dataAr[0],0)";
+            mysqli_query($con,$sql);
+            return true;
+        }
     }catch(Exception $e){
         echo $e->getMessage();
     }
@@ -260,9 +303,15 @@ function saveJob($data){
     try{
         global $con;
         $dataAr = explode("_",$data);
-        $sql = "insert into job_save(job_seeker_id,job_ref_no) values('$dataAr[1]',$dataAr[0])";
-        mysqli_query($con,$sql);
-        return true;
+        $sqlCheckAlreadySaved="Select * from job_save where job_seeker_id='$dataAr[1]' and job_ref_no=$dataAr[0]";
+        $rs=mysqli_query($con,$sqlCheckAlreadySaved);
+        if(mysqli_num_rows($rs)>0){
+            return false;
+        }else{
+            $sql = "insert into job_save(job_seeker_id,job_ref_no) values('$dataAr[1]',$dataAr[0])";
+            mysqli_query($con,$sql);
+            return true;
+        }
     }catch(Exception $e){
         echo $e->getMessage();
     }

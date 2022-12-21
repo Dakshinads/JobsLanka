@@ -59,11 +59,76 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="JobSeeker"){
         </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-sm-3">
+    <input class=" btn btn-primary btn-md my-4" name="post" type="button" onclick=" $('#viewInterviews').modal('show');" value="View My Interviews"/>   
+  </div> 
+</div>
 </main>
+<!-- Update Model -->
+<div class="modal fade" id="viewInterviews"  role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">          
+          <h5 class="modal-title">My Interviews</h5>
+        </div>
+        <div class="modal-body row">
+        <div class="table-responsive my-4" >
+        <table class="table table-striped table-sm " data-show-columns="true" data-height="500" id="interview" data-unique-id="id">
+            <thead >
+            <tr>
+                <th scope="col" class="col-2 " data-field="id">Date</th>
+                <th scope="col" class="col-2 ">Time</th>
+                <th scope="col" class="col-4 ">Job Title</th>
+                <th scope="col" class="col-4 ">Employer's Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php 
+            $sql= "SELECT ta.date, it.time,j.title,e.name from time_allocate as ta, applied_job as aj, interview_timeslot as it,
+             employer as e, job as j where ta.applied_job_id=aj.id and ta.interview_timeslot_id=it.id and ta.employer_id=e.id and 
+             aj.job_ref_no=j.job_ref_no and aj.job_seeker_id='$userID' order by ta.date,it.time;";
+            $result = mysqli_query($con,$sql);
+            while($row=mysqli_fetch_assoc($result)){
+                ?>
+            
+            <tr>
+                <td><?php echo $row['date']; ?></td>
+                <td><?php echo $row['time']; ?></td>
+                <td><?php echo $row['title']; ?></td>
+                <td><?php echo $row['name']; ?></td></td>
+            </tr>
+            <?php }
+            ?>
+            </tbody>
+        </table>
+        </div>
+        </div>
+        <div class="modal-footer mt-2">
+          <button type="button" class="btn btn-default" onclick="$('#viewInterviews').modal('hide');">Close</button>
+        </div>
+        </form> 
+      </div>
+    </div>
+  </div> 
+
 <script>
-    <?php sajax_show_javascript(); ?>
+  var $table = $('#interview');
+  function buildTable($el) {
+    var classes = $('.toolbar input:checked').next().text()
 
+    $el.bootstrapTable('destroy').bootstrapTable({
+        showFullscreen: true,
+        search: true,
+        stickyHeader: true,        
+    })
+    };
 
+    $(function() {
+        buildTable($table)
+    });
+
+  <?php sajax_show_javascript(); ?>
 </script>
 
 <!-- Adding footer -->
@@ -100,8 +165,11 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="JobSeeker"){
     window.onload = changeTableData();
 
     $(function () {
-        $('[data-bs-toggle="popover"]').popover()
-    })
+        $('[data-bs-toggle="popover"]').popover();
+    });
+    function viewInterviewDetails(){
+      $('[data-bs-toggle="popover"]').popover();
+    }
 
 
 </script>
@@ -134,7 +202,7 @@ function changeTableData($data){
             $values .= "<td class='text-center '><span class='badge bg-primary'>Pending</span></td>";
         }else if($status == 1){
             $values .= "<td class='text-center '><span class='badge bg-success'>Accepted</span>
-            <button type='button' class='btn btn-link' data-bs-container='body' title='Interview Date and timeslot' data-bs-toggle='popover' data-bs-placement='top' data-bs-content='Date:".$row['date']."<br/> Time: ".$row['time']."'>Interview Details</button>
+            <button type='button' onclick='viewInterviewDetails()' class='btn btn-link' data-bs-container='body' title='Interview Date and timeslot' data-bs-toggle='popover' data-bs-placement='top' data-bs-content='Date:".$row['date']."\n Time: ".$row['time']."'>Interview Details</button>
             </td>";
         }else if($status == 2){
             $values .= "<td class='text-center '><span class='badge bg-danger'>Rejected</span></td>";
