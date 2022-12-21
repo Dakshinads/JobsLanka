@@ -23,8 +23,6 @@ if($_SESSION['atype']=="JobSeeker"){
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="index.php" class="nav-link px-2 link-dark headingLink">Home</a></li>
           <li><a href="Employers.php" class="nav-link px-2 link-dark headingLink">Employers</a></li>
-          <!--<li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>-->
         </ul>
 
 <!-- non-login users dropdown -->

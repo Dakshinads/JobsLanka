@@ -19,13 +19,10 @@ sajax_handle_client_request();
     <link href="assets\css\jobslanka.css" rel="stylesheet">
     <link href="assets\css\bootstrap-table.min.css" rel="stylesheet">
     <link href="assets\css\bootstrap-table-sticky-header.css" rel="stylesheet">
+    <link href="assets\css\feeback.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-
-    <style>
-      tr:hover {
-        background-color: #11bbee;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 </head>
 <body>
 
@@ -34,7 +31,7 @@ sajax_handle_client_request();
 <script src="assets\js\jquery-3.6.1.min.js"></script>
 <script src="assets\js\bootstrap-table.min.js"></script>
 <script src="assets\js\bootstrap-table-sticky-header.js"></script>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <!-- Adding header -->
 <?php include "header.php" ?>
 
@@ -55,7 +52,7 @@ sajax_handle_client_request();
       <div class ="row mb-5 shadow p-3 bg-white rounded">
         <div class="col-sm-3 px-1">
           <label  class="form-label"><strong>Search</strong></label>
-          <input type="search" class="form-control form-control-sm rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          <input type="text" class="form-control form-control-sm rounded" id="search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
         </div>
         <div class="col-sm-3 px-1">
           <label  class="form-label"><strong>Category</strong></label>
@@ -83,7 +80,7 @@ sajax_handle_client_request();
         </div>
 
       </div>
-      <div class="table-responsive" >
+      <div class="table-responsive shadow bg-white rounded" >
         <table class="table table-sm "   data-height="600" id="jobs" data-unique-id="id">
           <thead style="background-color: #8ad2f6;">
             <tr>
@@ -130,11 +127,98 @@ sajax_handle_client_request();
     </div>
   </div>
 </main>
+<main class="mb-5">
+<div class="items container mb-5">
+  <?php
+    $getFeedbacksSql="SELECT f.description,js.name as jsname,e.name as ename,e.logo FROM feedback as f left join job_seeker as js on f.job_seeker_id=js.nic 
+    LEFT JOIN employer as e on f.employer_id=e.id;";
+    $rs=mysqli_query($con,$getFeedbacksSql);
+    while($fbrow=mysqli_fetch_assoc($rs)){
+  ?>
+  <div class="card">
+    <div class="card-body">
+        <h4 class="card-title"><img src="Images/quote-left.png"></h4>
+        
+        <div class="template-demo">
+            <p><?php echo $fbrow['description'] ?></p>
+        </div><hr>
 
-<div class="b-example-divider"></div>
+        <div class="row">
+          <div class="col-sm-2">
+            <?php if(strlen($fbrow['jsname'])>0){ ?>
+              </div>
+              <div class="col-sm-10">
+                <div class="profile">
+                <h4 class="cust-name"><?php
+                if(str_word_count($fbrow['jsname'])>2){
+                  $strName=explode(" ",$fbrow['jsname']);
+                  echo $strName[0]." ".$strName[1];
+                }else{
+                  echo $fbrow['jsname'];
+                }
+                ?></h4>
+                
+                  <p class="cust-profession">Job Seeker</p>    
+                </div>        
+              </div>
+            <?php }else{ ?>
+              <img class="profile-pic" src="Uploads/Logo/<?php echo $fbrow['logo'] ?>"> 
+              </div>
+              <div class="col-sm-10">
+                <div class="profile">
+                <h4 class="cust-name"><?php echo $fbrow['ename'] ?></h4>
+                  <p class="cust-profession">Employer</p>    
+                </div>        
+              </div>
+
+            <?php } ?>
+        </div>
+    </div>
+  </div>
+  <?php } ?>
+ </div>
+</main>
 <script>
-  var $table = $('#jobs');
+$(document).ready(function(){
+    
+    $('.items').slick({
+  dots: true,
+  infinite: true,
+  speed: 800,
+ autoplay: true,
+ autoplaySpeed: 2000,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
 
+  ]
+});
+          });
+
+  var $table = $('#jobs');
  
   function buildTable($el) {
   var classes = $('.toolbar input:checked').next().text()
@@ -142,7 +226,7 @@ sajax_handle_client_request();
   $el.bootstrapTable('destroy').bootstrapTable({
       showFullscreen: false,
       search: false,
-      stickyHeader: true,        
+      stickyHeader: false,        
   })
   };
 
@@ -167,6 +251,30 @@ sajax_handle_client_request();
 
   }
   window.onload = changeTableData();
+
+$('#search').keyup(function() {
+ 
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("search");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("jobs");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+});
+
 </script>
 
 <!-- Adding footer -->
