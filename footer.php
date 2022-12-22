@@ -13,7 +13,7 @@
         <h5>About</h5>
           <li class="nav-item mb-2"><a href="aboutus.php" class="nav-link p-0 text-muted">About us</a></li>
           <li class="nav-item mb-2"><a href="contactus.php" class="nav-link p-0 text-muted">Contact us</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQ</a></li>
+          <li class="nav-item mb-2"><a href="faq.php" class="nav-link p-0 text-muted">FAQ</a></li>
         </ul>
       </div>
 

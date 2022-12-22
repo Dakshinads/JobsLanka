@@ -509,11 +509,11 @@ function verifyEmail($vcode){
     $mailAddress=$valuesAr[1];
 
     $mail = new Mail();
-    /*$v=$mail->sendMail($mailAddress, "JobsLanka Email Verification",
+    $v=$mail->sendMail($mailAddress, "JobsLanka Email Verification",
     "Hello
     You requested to use this email address to access your JobsLanka account.
     This is your verification code:".$verifycode
-    );*/
+    );
   $v=1;
     return $v;
 }
@@ -628,7 +628,6 @@ if(isset($_POST['jregister'])){
       echo "<script>
       $('#signupDoneAlert').fadeIn(100);
       </script>";
-      // move to the profile
     }else{
       echo "Error: " . $sql . "<br>" . mysqli_error($con);
     }

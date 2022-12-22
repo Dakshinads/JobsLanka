@@ -262,11 +262,11 @@ function verifyEmail($vcode){
       $rs=mysqli_query($con,$sql);
       if(mysqli_num_rows($rs)>0){
         $mail = new Mail();
-        /*$v=$mail->sendMail($mailAddress, "JobsLanka Email Verification for forget password",
+        $v=$mail->sendMail($mailAddress, "JobsLanka Email Verification for forget password",
         "Hello
         You requested forgot your password.
         This is your verification code:".$verifycode
-        );*/
+        );
         return true;
       }else{
         return false;

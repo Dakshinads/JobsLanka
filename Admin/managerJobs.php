@@ -1,6 +1,7 @@
 <?php require "../DBCon.php";
 session_start();
-require("../sajax.php");     
+require("../sajax.php");   
+require "../Mail.php";  
 sajax_init();
 sajax_export("changeTableData");
 sajax_export("approveJob");
@@ -423,6 +424,20 @@ function approveJob($id){
       global $con;
       $sql = "update job set status=1, active = 1 where job_ref_no =$id ";
       mysqli_query($con,$sql);
+
+      $getEmailOfEmployer= "select e.name, e.email from job as j, employer as e where e.id=j.employer_id and j.job_ref_no=$id";
+      $rs=mysqli_query($con,$getEmailOfEmployer);
+      $row=mysqli_fetch_assoc($rs);
+      $name=$row['name'];
+      $mailAddress = $row['email'];
+
+      $mail = new Mail();
+      $v=$mail->sendMail($mailAddress, "JobsLanka Vacancy",
+      "Hi $name, </br> \n
+      Your vacancy( job reference no : $id ) is approved. Now Job seekers can view your vacancy.
+      "
+      );
+
       return $id;
     }
     catch(Exception $e){
@@ -437,8 +452,20 @@ function declineJob($id){
         $value = explode("_",$id);
 
         $sql= "update job set active=0, status=2, reason='$value[1]' where job_ref_no=$value[0]";
-        
         mysqli_query($con,$sql);
+
+        $getEmailOfEmployer= "select e.name, e.email from job as j, employer as e where e.id=j.employer_id and j.job_ref_no=$value[0]";
+        $rs=mysqli_query($con,$getEmailOfEmployer);
+        $row=mysqli_fetch_assoc($rs);
+        $name=$row['name'];
+        $mailAddress = $row['email'];
+        $mail = new Mail();
+        $v=$mail->sendMail($mailAddress, "JobsLanka Vacancy",
+        "Hi $name, </br> \n
+        Your vacancy( job reference no : $value[0] ) is declined. Reason is $value[1]
+        "
+        );
+
        return $value[1];
     }catch(Exception $e){
       echo $e->getMessage();

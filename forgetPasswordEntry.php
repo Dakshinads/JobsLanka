@@ -100,6 +100,13 @@ if(isset($_POST['reset'])){
   echo "<script>
     $('#fogotPasswordDoneAlert').fadeIn(100);
     </script>";
+
+    $mail = new Mail();
+    $mailad=$_COOKIE["emailOfUser"];
+    $v=$mail->sendMail($mailad, "JobsLanka Reset Password",
+    "Hello
+    The password for your JobsLanka Account $mailad was changed."
+    );
 }
 }
 else{

@@ -1,5 +1,6 @@
 <?php require "../DBCon.php";
 require "../fillCombo.php"; 
+require "../Mail.php";
 session_start();
 if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 ?>
@@ -307,7 +308,13 @@ if(isset($_POST['register'])){
   ('$nic','$name','$address','$email','$cno','$gender','$pass','$pp',$jrole,1)";
 
   if(mysqli_query($con,$sql)){
-    // mail send to user
+    $mail = new Mail();
+    $passw=$_POST['pw'];
+    $v=$mail->sendMail($email, "JobsLanka Staff Login",
+    "Hi $name, </br> \n
+    Your JobsLanka staff login was created.Your username: $email and Your password:  $passw.
+    "
+    );
     echo "<script>window.location.href='users.php';</script>";
   }else{
     echo "Error: " . $sql . "<br>" . mysqli_error($con);
