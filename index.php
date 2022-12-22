@@ -46,7 +46,7 @@ sajax_handle_client_request();
   </section>
 </main>
 
-<main class="container">
+<main class="container mt-5">
   <div class="row">
     <div class="col-lg-9 col-md-9 col-sm-9">
       <div class ="row mb-5 shadow p-3 bg-white rounded">

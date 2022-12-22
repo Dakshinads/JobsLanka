@@ -42,7 +42,7 @@ if(isset($_SESSION['userData'])){
                 </div>
 
                 <form action="" method="POST" class="needs-validation" novalidate >
-                  <p>Please login to your account</p>
+                  <p>Are you a Job Seeker or an Employer?</p>
                   <div class="col-sm-12 mb-3">
                   <div class='alert alert-danger alert-dismissible collapse' role='alert' id="loginErrorAlert">
                     Email or Password incorrect
@@ -78,7 +78,7 @@ if(isset($_SESSION['userData'])){
 
                   <div class="text-center pt-2 mb-5 pb-1">
                     <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" name="login">Login</button>
-                    <a class="text-muted" href="#"> Forgot password?</a>
+                    <a class="text-muted" href="forgotPassword.php"> Forgot password?</a>
                   </div>
 
                   <div class="d-flex align-items-center justify-content-center pb-1">
