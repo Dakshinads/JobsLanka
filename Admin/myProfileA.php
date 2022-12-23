@@ -22,11 +22,6 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
     <link href="..\assets\css\bootstrap-table-sticky-header.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
-    <script src="..\assets\js\bootstrap.bundle.min.js"></script>
-    <script src="..\assets\js\feather.js"></script>
-    <script src="..\assets\js\jquery-3.6.1.min.js"></script>
-    <script src="..\assets\js\bootstrap-table.min.js"></script>
-    <script src="..\assets\js\bootstrap-table-sticky-header.js"></script>
    
 
 </head>
@@ -257,6 +252,11 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 
 <script src="..\assets\js\form-validations.js"></script>
 <script src="..\assets\js\fileValidation.js"></script>
+<script src="..\assets\js\bootstrap.bundle.min.js"></script>
+    <script src="..\assets\js\feather.js"></script>
+    <script src="..\assets\js\jquery-3.6.1.min.js"></script>
+    <script src="..\assets\js\bootstrap-table.min.js"></script>
+    <script src="..\assets\js\bootstrap-table-sticky-header.js"></script>
 <script>
     function isActivePass(){
     if(document.getElementById('activePass').checked == true){

@@ -16,9 +16,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
     <link href="..\assets\css\jobslanka.css" rel="stylesheet">
     <link href="..\assets\css\dashboard.css" rel="stylesheet">
 
-    <script src="..\assets\js\bootstrap.bundle.min.js"></script>
-    <script src="..\assets\js\feather.js"></script>
-    <script src="..\assets\js\jquery-3.6.1.min.js"></script>
+
    
 
 </head>
@@ -255,6 +253,9 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
 
   <script src="..\assets\js\fileValidation.js"></script>
    <script src="..\assets\js\form-validations.js"></script>
+   <script src="..\assets\js\bootstrap.bundle.min.js"></script>
+    <script src="..\assets\js\feather.js"></script>
+    <script src="..\assets\js\jquery-3.6.1.min.js"></script>
 </body>
 </html>
 <?php
