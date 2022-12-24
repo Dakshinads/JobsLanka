@@ -134,7 +134,7 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
         <div class="row">
         <div class="col-1 ">
         <label  class="h6">Job Status:</label></div>
-        <div class="col-6 ">
+        <div class="col-5 ">
         <select class="form-select form-select-sm" id="jStatus" name="jStatus" onchange="changeTableData()">
             <option value="0">All Jobs</option>
             <option value="1">Approval Pending Jobs</option>
@@ -142,6 +142,11 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
             <option value="3">Declined Jobs</option>
             <option value="4">Achived Jobs</option>
         </select>
+        </div>
+        <div class="col-1 ">
+        <label  class="h6">Search:</label></div>
+        <div class="col-5 ">
+          <input type="text" class="form-control form-control-sm rounded" id="search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
         </div>
     </div>
     <div class="row">
@@ -329,6 +334,33 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==1){
     }
   }
 
+  $('#search').keyup(function() {
+ 
+ var input, filter, table, tr, td, i, txtValue;
+ input = document.getElementById("search");
+ filter = input.value.toUpperCase();
+ table = document.getElementById("jobs");
+ tr = table.getElementsByTagName("tr");
+
+ // Loop through all table rows, and hide those who don't match the search query
+ for (i = 0; i < tr.length; i++) {
+   td1 = tr[i].getElementsByTagName("td")[1];
+   td2 = tr[i].getElementsByTagName("td")[2];
+   td3 = tr[i].getElementsByTagName("td")[3];
+   if (td1) {
+     txtValue1 = td1.textContent || td1.innerText;
+     txtValue2 = td2.textContent || td2.innerHTML;
+     txtValue3 = td3.textContent || td3.innerHTML;
+     if (txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1 || txtValue3.toUpperCase().indexOf(filter) > -1) {
+       tr[i].style.display = "";
+     } else {
+       tr[i].style.display = "none";
+     }
+   }
+
+ }
+
+});
 
 </script>
   </body>
