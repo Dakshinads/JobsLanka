@@ -1,6 +1,7 @@
 <?php
 require "DBCon.php";
-require("sajax.php");     
+require("sajax.php");
+require_once "Mail.php";     
 sajax_init();
 sajax_export("getComboInterviewTimeSlot");
 sajax_export("reject");
@@ -228,7 +229,6 @@ function getComboInterviewTimeSlot(){
 }
 
 function getComboInterviewTimeSlot_x(msg){
-
     $('#interviewTime option').remove();
     $('#interviewTime').append(msg);
     
@@ -269,12 +269,13 @@ function checkTimeSlots(){
 else{
   header('location:login.php');
 }
+$mail= new Mail();
 
 function getComboInterviewTimeSlot($data){
     global $con;
     try{
         $dataAr = explode("_",$data);
-        $sql="select i.id,i.time from interview_timeslot as i left join time_allocate as ta on i.id=ta.interview_timeslot_id 
+        $sql="select Distinct i.id, i.time from interview_timeslot as i left join time_allocate as ta on i.id=ta.interview_timeslot_id 
         where i.employer_id=$dataAr[1]  and i.isactive=1 and i.id NOT IN ( select ta.interview_timeslot_id from time_allocate as ta 
         where ta.employer_id= $dataAr[1] and ta.date = '$dataAr[0]');";
         $result=mysqli_query($con,$sql);
@@ -293,18 +294,34 @@ if(isset($_POST['accept'])){
         $interviewDate=$_POST['interviewDate'];
         $interviewTime=$_POST['interviewTime'];
         $appliedJobId= $_POST['hdnAppliedID'];
+
+        //getEmail of Job seeker
+        $sqlEmail="SELECT js.email FROM applied_job as aj, job_seeker as js WHERE js.nic=aj.job_seeker_id and aj.id=$appliedJobId;";
+        $r=mysqli_query($con,$sqlEmail);
+        $row=mysqli_fetch_assoc($r);
+        $jobSeekerEmail=$row['email'];
+
+       
+
         $type=$_POST['hdntype'];
         if($type=="update"){
             $sqlupdate="update time_allocate set interview_timeslot_id=$interviewTime,date='$interviewDate' where applied_job_id=$appliedJobId ";
             mysqli_query($con,$sqlupdate);
+            $v=$mail->sendMail($jobSeekerEmail, "JobsLanka Your Job Applied",
+            "Hello
+            Your interview Time slot updated
+            "
+            );
         }else if ($type=="save"){
             $sql= "insert into time_allocate(applied_job_id,employer_id,interview_timeslot_id,date) values ($appliedJobId,$UserID,$interviewTime,'$interviewDate')";
             mysqli_query($con,$sql);
             $sql="update applied_job set status=1 where id=$appliedJobId";
             mysqli_query($con,$sql);
+            $v=$mail->sendMail($jobSeekerEmail, "JobsLanka Your Job Applied",
+            "Hello
+            Congrats. Your cv approved please check your interview and time through the your job section in jobslanka "
+            );
         }
-        
-
        
         echo "<script>window.location.href='viewApplicants.php'</script>";
 
@@ -315,11 +332,25 @@ if(isset($_POST['accept'])){
 }
 
 function reject($id){
+    require_once "Mail.php"; 
 try{
     global $con;
 
     $sql="update applied_job set status=2 where id=$id";
     mysqli_query($con,$sql);
+
+    //getEmail of Job seeker
+    $mail= new Mail();
+    $sqlEmail="SELECT js.email FROM applied_job as aj, job_seeker as js WHERE js.nic=aj.job_seeker_id and aj.id=$id;";
+    $r=mysqli_query($con,$sqlEmail);
+    $row=mysqli_fetch_assoc($r);
+    $jobSeekerEmail=$row['email'];
+
+    $v=$mail->sendMail($jobSeekerEmail, "JobsLanka Your Job Applied",
+    "Hello
+    Your CV rejected.
+    "
+    );
     return true;
 
 }

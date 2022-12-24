@@ -279,11 +279,13 @@ function saveJob_x(msg){
 </html>
 <?php 
 function applyJob($data){
+    require_once "Mail.php"; 
     try{
         // status 0 = Pending
         // status 1 = Accept
         // status 2 = Reject
         global $con;
+        $mail= new Mail();
         $dataAr = explode("_",$data);
         $sqlCheckAlreadyApplied="Select * from applied_job where job_seeker_id='$dataAr[1]' and job_ref_no=$dataAr[0]";
         $rs=mysqli_query($con,$sqlCheckAlreadyApplied);
@@ -292,7 +294,20 @@ function applyJob($data){
         }else{
             $sql= "insert into applied_job(job_seeker_id,job_ref_no,status) values('$dataAr[1]',$dataAr[0],0)";
             mysqli_query($con,$sql);
+            
+            $sqlEmail="SELECT email FROM job_seeker WHERE nic='$dataAr[1]';";
+            $r=mysqli_query($con,$sqlEmail);
+            $row=mysqli_fetch_assoc($r);
+            $jobSeekerEmail=$row['email'];
+        
+            $v=$mail->sendMail($jobSeekerEmail, "JobsLanka Job Apply",
+            "Hello
+            Your applied open vacancy successfully.
+            "
+            );
             return true;
+
+            
         }
     }catch(Exception $e){
         echo $e->getMessage();

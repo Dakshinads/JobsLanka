@@ -1,6 +1,7 @@
 <?php
 require "DBCon.php";
 require "fillCombo.php";
+require_once "Mail.php";
 session_start();
 if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
   $email=$_SESSION['userData']['id'];
@@ -251,7 +252,18 @@ if(isset($_POST['send']) ){
            }
        }
        }
-       $employerId=$_SESSION['userData']['id'];
+       $employerId = $_SESSION['userData']['id'];
+       $employerEmail = $_SESSION['userData']['email'];
+
+       $sql="select s.email from job_category as jc, staff as s where jc.id=$jCategory and s.nic=jc.manager_id;";
+        $rs=mysqli_query($con,$sql);
+        $row=mysqli_fetch_assoc($rs);
+        $managerEmail=$row['email'];
+        $mail= new Mail();
+        $v=$mail->sendMail(strval($managerEmail), "JobsLanka Job Posted",
+        "Hello
+        You have a new pending job in your department"
+        );
        
 
        $sql = "insert into job (title,description,image,opening_date,closing_date,active,status,reason,job_category_id ,job_type_id,employer_id,location)
@@ -259,9 +271,17 @@ if(isset($_POST['send']) ){
        if(mysqli_query($con,$sql)){
         unset($_POST);
         unset($sql);
+
+        $mail->sendMail($employerEmail, "JobsLanka Job Posted",
+        "Hello
+        Your job title :  $title is added to the pending list"
+        );
+
+        
+
             echo "<script>
             $('#postAlert').fadeIn(100);
-            window.location.href ='createJob.php'
+            //window.location.href ='myJobsE.php'
             </script>";
             
        }else{
