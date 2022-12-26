@@ -100,7 +100,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                     <div class="bootstrap-timepicker ">
                         <input id="starttime" name="starttime" type="time" class="form-control " required>
                         <div class="invalid-feedback">
-                            Please provide a valid start date.
+                            Please provide a valid start Time.
                         </div>
                     </div>
                     </div>
@@ -111,7 +111,7 @@ if(isset($_SESSION['userData']) && $_SESSION['atype']=="Employer"){
                     <div class="bootstrap-timepicker ">
                         <input id="endtime" name="endtime" type="time" class="form-control  " required>
                         <div class="invalid-feedback">
-                            Please provide a valid end date.
+                            Please provide a valid end Time.
                         </div>
                     </div>
                     </div>

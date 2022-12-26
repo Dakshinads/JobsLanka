@@ -125,8 +125,8 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){
       <div class="row my-4">
         <div class="col-6">
         <select class="form-select form-select-sm" id="rp" name="rp" onchange="changeTableDatab()">
-            <option value="0">Most approved job posted company</option>
-            <option value="1">Most declined job posted company</option>
+            <option value="0">Most approved job posted Employer</option>
+            <option value="1">Most declined job posted Employer</option>
         </select>
         </div>
       </div>
@@ -282,9 +282,9 @@ if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['job_role_id']==2){
       var deptName=document.getElementById('hdnUserDeptName').value;
       var depid= $('#hdnUserDeptID').val();
       if(id==0){
-        document.getElementById('lblheading').innerHTML="Most Approved Job Posted Company in "+deptName;
+        document.getElementById('lblheading').innerHTML="Most Approved Job Posted Employers in "+deptName;
       }else{
-        document.getElementById('lblheading').innerHTML="Most Declined Job Posted Company in "+deptName;
+        document.getElementById('lblheading').innerHTML="Most Declined Job Posted Employers in "+deptName;
       }
       x_changeTableDatab(id+"_"+depid,changeTableDatab_x);
     }
